@@ -17,8 +17,6 @@ source $ZSH/oh-my-zsh.sh
 
 # Example aliases
 alias zshconfig="mate ~/.zshrc"
-alias ghe="gh copilot explain"
-alias ghs="gh copilot suggest"
 alias vim="nvim"
 alias denos='deno run --allow-env --allow-net'
 # alias ohmyzsh="mate ~/.oh-my-zsh"
@@ -50,11 +48,7 @@ source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 alias ls="eza --icons=always"
 
 # ---- Zoxide (better cd) ----
-eval "$(zoxide init zsh)"
 alias cd="z"
-
-# ---- TheFuck
-eval $(thefuck --alias)
 
 # ---- Trash
 export PATH="/opt/homebrew/opt/trash/bin:$PATH"
@@ -71,3 +65,6 @@ esac
 
 # Added by Antigravity
 export PATH="/Users/accelmaeshiro/.antigravity/antigravity/bin:$PATH"
+
+# ---- Zoxide init (debe quedarse al FINAL del archivo) ----
+eval "$(zoxide init zsh)"

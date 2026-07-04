@@ -25,8 +25,6 @@ link "$DF/tmux/.tmux.conf"        "$HOME/.tmux.conf"
 link "$DF/wezterm/.wezterm.lua"   "$HOME/.wezterm.lua"
 link "$DF/git/.gitconfig"         "$HOME/.gitconfig"
 link "$DF/git/ignore"             "$HOME/.config/git/ignore"
-link "$DF/thefuck/settings.py"    "$HOME/.config/thefuck/settings.py"
-link "$DF/gh-copilot/config.yml"  "$HOME/.config/gh-copilot/config.yml"
 
 echo ""
 echo "Listo. Reinicia tu shell (exec zsh) para aplicar."

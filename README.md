@@ -11,8 +11,6 @@ Mi configuración personal para macOS. Gestionada con symlinks.
 | `tmux/` | `.tmux.conf` (plugins vía tpm, no versionados) | `~/.tmux.conf` |
 | `wezterm/` | `.wezterm.lua` | `~/.wezterm.lua` |
 | `git/` | `.gitconfig` + `ignore` global | `~/.gitconfig`, `~/.config/git/ignore` |
-| `thefuck/` | `settings.py` | `~/.config/thefuck/settings.py` |
-| `gh-copilot/` | `config.yml` | `~/.config/gh-copilot/config.yml` |
 
 ## Instalación en una máquina nueva
 
@@ -26,7 +24,7 @@ cd ~/dotfiles
 
 ```bash
 brew install neovim tmux wezterm zsh-autosuggestions zsh-syntax-highlighting \
-  powerlevel10k eza zoxide thefuck trash
+  powerlevel10k eza zoxide trash
 ```
 
 Además:
