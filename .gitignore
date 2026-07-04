@@ -1,0 +1,11 @@
+# Neovim: estado/plugins generados (se reinstalan con lazy)
+nvim/lazy-lock.json.bak
+
+# Caches / SO
+.DS_Store
+**/__pycache__/
+*.pyc
+
+# Nada de secretos ni historiales debe entrar aquí
+*_history
+*.log
