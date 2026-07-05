@@ -11,6 +11,7 @@ keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
 
 -- salir a modo normal con kj (insert)
 keymap.set("i", "kj", "<Esc>", { desc = "Salir a modo normal (kj)" })
+keymap.set("i", "jk", "<Esc>", { desc = "Salir a modo normal (kj)" })
 
 -- go back
 keymap.set("n", "gb", "<C-o>", { desc = "Go back in jump list" })

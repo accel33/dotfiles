@@ -146,10 +146,9 @@
   typeset -g POWERLEVEL9K_PROMPT_ADD_NEWLINE=true
 
   # Connect left prompt lines with these symbols.
-  # (marco ╭─├─╰─ desactivado: causaba reflujo feo al redimensionar panes de tmux)
-  typeset -g POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX=
-  typeset -g POWERLEVEL9K_MULTILINE_NEWLINE_PROMPT_PREFIX=
-  typeset -g POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX=
+  typeset -g POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX='%6F╭─'
+  typeset -g POWERLEVEL9K_MULTILINE_NEWLINE_PROMPT_PREFIX='%6F├─'
+  typeset -g POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX='%6F╰─'
   # Connect right prompt lines with these symbols.
   typeset -g POWERLEVEL9K_MULTILINE_FIRST_PROMPT_SUFFIX=
   typeset -g POWERLEVEL9K_MULTILINE_NEWLINE_PROMPT_SUFFIX=

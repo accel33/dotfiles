@@ -55,6 +55,9 @@ export PATH="/opt/homebrew/opt/trash/bin:$PATH"
 
 export PATH=$PATH:/usr/local/go/bin
 
+# ---- gcloud: usar Python 3.10 (gcloud ya no soporta el 3.9 del sistema) ----
+export CLOUDSDK_PYTHON=/opt/homebrew/bin/python3.10
+
 # pnpm
 export PNPM_HOME="/Users/accelmaeshiro/Library/pnpm"
 case ":$PATH:" in
