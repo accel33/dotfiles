@@ -31,10 +31,23 @@ return {
 
     local ts_context_commentstring = require("ts_context_commentstring.integrations.comment_nvim")
 
+    local ts_pre_hook = ts_context_commentstring.create_pre_hook()
+
     -- enable comment
     comment.setup({
       -- for commenting tsx, jsx, svelte, html files
-      pre_hook = ts_context_commentstring.create_pre_hook(),
+      -- con fallback al commentstring nativo: sin esto, Comment.nvim (archivado)
+      -- revienta en nvim 0.12 con archivos sin parser de treesitter (ej: tmux.conf)
+      pre_hook = function(ctx)
+        local ok, result = pcall(ts_pre_hook, ctx)
+        if ok and result then
+          return result
+        end
+        local cs = vim.bo.commentstring
+        if cs and cs ~= "" then
+          return cs
+        end
+      end,
     })
   end,
 }
