@@ -17,6 +17,22 @@ keymap.set("i", "jk", "<Esc>", { desc = "Salir a modo normal (kj)" })
 keymap.set("n", "gb", "<C-o>", { desc = "Go back in jump list" })
 
 -------------------------
+--  PORTAPAPELES: solo 'y' copia al sistema
+-------------------------
+-- borrar / cambiar / x van al "black hole" (no pisan el portapapeles)
+keymap.set({ "n", "x" }, "d", '"_d', { desc = "Borrar sin tocar el portapapeles" })
+keymap.set({ "n", "x" }, "D", '"_D', { desc = "Borrar (a fin de línea) sin portapapeles" })
+keymap.set({ "n", "x" }, "c", '"_c', { desc = "Cambiar sin tocar el portapapeles" })
+keymap.set({ "n", "x" }, "C", '"_C', { desc = "Cambiar (a fin de línea) sin portapapeles" })
+keymap.set({ "n", "x" }, "x", '"_x', { desc = "Borrar carácter sin portapapeles" })
+
+-- cortar DE VERDAD (sí va al portapapeles) con <leader>d
+keymap.set({ "n", "x" }, "<leader>d", '"+d', { desc = "Cortar al portapapeles" })
+
+-- en visual, pegar encima NO pisa lo que tienes yankeado
+keymap.set("x", "p", '"_dP', { desc = "Pegar sin perder el yank" })
+
+-------------------------
 --  SPLITS & TABS
 -------------------------
 
