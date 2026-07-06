@@ -22,9 +22,16 @@ cd ~/dotfiles
 
 ## Dependencias (Homebrew)
 
+Todo mi software está en el `Brewfile`. Para reinstalarlo de un jalón en una Mac nueva:
+
 ```bash
-brew install neovim tmux wezterm zsh-autosuggestions zsh-syntax-highlighting \
-  powerlevel10k eza zoxide trash
+brew bundle install --file=~/dotfiles/Brewfile
+```
+
+Para actualizar el `Brewfile` con lo que tenga instalado hoy:
+
+```bash
+brew bundle dump --file=~/dotfiles/Brewfile --force
 ```
 
 Además:
