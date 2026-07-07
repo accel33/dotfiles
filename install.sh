@@ -26,5 +26,9 @@ link "$DF/wezterm/.wezterm.lua"   "$HOME/.wezterm.lua"
 link "$DF/git/.gitconfig"         "$HOME/.gitconfig"
 link "$DF/git/ignore"             "$HOME/.config/git/ignore"
 
+# tmux-resurrect no crea su carpeta solo; sin esto el auto-guardado falla en silencio
+mkdir -p "$HOME/.tmux/resurrect"
+echo "creado: ~/.tmux/resurrect (para tmux-resurrect/continuum)"
+
 echo ""
 echo "Listo. Reinicia tu shell (exec zsh) para aplicar."
