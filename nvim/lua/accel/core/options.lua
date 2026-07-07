@@ -1,3 +1,15 @@
+-- Neovim 0.12: silenciar el ruido de deprecación de plugins que aún no soportan
+-- la API nueva (Telescope, nvim-cmp, etc.). Tu propia config ya está modernizada.
+-- Quita este bloque cuando esos plugins se actualicen para 0.12.
+vim.deprecate = function() end
+local _notify = vim.notify
+vim.notify = function(msg, ...)
+  if type(msg) == "string" and (msg:find("deprecated", 1, true) or msg:find("position_encoding", 1, true)) then
+    return
+  end
+  return _notify(msg, ...)
+end
+
 vim.cmd("let g:netrw_liststyle = 3")
 
 local opt = vim.opt
