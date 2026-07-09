@@ -4,12 +4,12 @@ return {
   config = function()
     local lint = require("lint")
 
-    lint.linters_by_ft = {
-      javascript = { "eslint_d" },
-      typescript = { "eslint_d" },
-      javascriptreact = { "eslint_d" },
-      typescriptreact = { "eslint_d" },
-    }
+    -- ESLint lo maneja el LSP (vscode-eslint), que solo se activa si el proyecto
+    -- tiene su config. NO usamos eslint_d aquí porque: (1) sería redundante con el
+    -- LSP, (2) el eslint_d de mason es viejo y no entiende flat config, y (3) daba
+    -- el error "No ESLint configuration found" en proyectos sin config.
+    -- Deja este mapa listo para OTROS linters (ej. stylelint, markdownlint) si algún día.
+    lint.linters_by_ft = {}
 
     local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
 
