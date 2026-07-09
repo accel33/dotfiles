@@ -66,16 +66,11 @@ return {
         opts.desc = "Restart LSP"
         keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary
 
-        -- Inlay hints: anotaciones inline de tipos y nombres de parámetro
+        -- Inlay hints: OFF por defecto. Actívalos cuando quieras con <leader>ih.
         opts.desc = "Toggle inlay hints"
         keymap.set("n", "<leader>ih", function()
           vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = ev.buf }), { bufnr = ev.buf })
         end, opts)
-
-        -- mostrarlos por defecto (comenta estas 3 líneas si te resultan ruidosos)
-        if vim.lsp.inlay_hint then
-          vim.lsp.inlay_hint.enable(true, { bufnr = ev.buf })
-        end
       end,
     })
 

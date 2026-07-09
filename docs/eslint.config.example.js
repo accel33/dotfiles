@@ -43,6 +43,10 @@ export default tseslint.config(
       "no-unused-vars": "off",
       "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }], // [TS]
 
+      // permitir require() (útil en scripts CommonJS / JavaScript). Quítalo si quieres
+      // forzar import/export en TS.
+      "@typescript-eslint/no-require-imports": "off", // [TS]
+
       // --- estilo (ajústalo a tu gusto) ---
       "no-console": "off", // pon "warn" si no quieres console.log en producción
     },
