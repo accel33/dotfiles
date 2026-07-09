@@ -53,36 +53,7 @@ keymap.set("n", "<leader>tn", "<cmd>tabn<CR>", { desc = "Next tab" })
 keymap.set("n", "<leader>tp", "<cmd>tabp<CR>", { desc = "Previous tab" })
 keymap.set("n", "<leader>tf", "<cmd>tabnew %<CR>", { desc = "Open buffer in new tab" })
 
--- terminal (toggle nativo: reutiliza el mismo buffer, oculta sin matar el proceso)
-local term_state = { buf = nil, win = nil }
-local function toggle_term()
-  -- si la ventana de la terminal está visible, la ocultamos (el proceso sigue vivo)
-  if term_state.win and vim.api.nvim_win_is_valid(term_state.win) then
-    vim.api.nvim_win_hide(term_state.win)
-    term_state.win = nil
-    return
-  end
-
-  -- abrir un split horizontal abajo, de 15 líneas
-  vim.cmd("botright split")
-  vim.cmd("resize 15")
-  term_state.win = vim.api.nvim_get_current_win()
-
-  -- reutilizar el buffer de terminal si sigue vivo; si no, crear uno nuevo
-  if term_state.buf and vim.api.nvim_buf_is_valid(term_state.buf) then
-    vim.api.nvim_win_set_buf(term_state.win, term_state.buf)
-  else
-    vim.cmd("terminal")
-    term_state.buf = vim.api.nvim_get_current_buf()
-  end
-
-  vim.cmd("startinsert")
-end
-
-keymap.set("n", "<leader>tt", toggle_term, { desc = "Terminal (toggle)" })
-
--- en modo terminal: salir a modo normal con Esc Esc (luego <leader>tt para ocultar)
-keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Terminal -> modo normal" })
+-- Terminal: se usa un pane de tmux (Ctrl+j al de abajo), no la terminal interna de nvim.
 
 -------------------------
 --  HANDS DOWN NEU LAYOUT
