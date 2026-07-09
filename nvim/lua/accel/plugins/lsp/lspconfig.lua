@@ -54,7 +54,14 @@ return {
         keymap.set("n", "]d", vim.diagnostic.goto_next, opts) -- jump to next diagnostic in buffer
 
         opts.desc = "Show documentation for what is under cursor"
-        keymap.set("n", "K", vim.lsp.buf.hover, opts) -- show documentation for what is under cursor
+        keymap.set("n", "K", function()
+          vim.lsp.buf.hover({ border = "rounded", max_width = 90 })
+        end, opts) -- hover con borde redondeado
+
+        opts.desc = "Signature help (parámetros de la función)"
+        keymap.set({ "n", "i" }, "<C-s>", function()
+          vim.lsp.buf.signature_help({ border = "rounded" })
+        end, opts) -- Ctrl+s muestra la firma/params (útil al escribir la llamada)
 
         opts.desc = "Restart LSP"
         keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary
