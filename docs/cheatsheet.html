@@ -353,8 +353,71 @@ Abajo lo escribo como <kbd class="sp">⌃a</kbd> <kbd>tecla</kbd>.</div>
   Las windows y panes <b>empiezan en 1</b> y se <b>renumeran</b> al cerrar. Para mandar un <kbd>Ctrl+a</kbd> literal a un programa, presiónalo <b>dos veces</b>.
 </div>
 
+<!-- ============================ TERMINAL ============================ -->
+<div class="part" style="background:linear-gradient(90deg,#059669,#34d399); page-break-before:always;">💻  TERMINAL (zsh + WezTerm)</div>
+<div class="intro">Tu shell es <b>zsh</b> en <b>WezTerm</b>. Estas teclas ya están configuradas para sentirse como macOS.</div>
+
+<div class="explain">
+  <b>💡 La sugerencia gris (autosuggestions)</b> aparece sola según tu historial mientras escribes — NO es lo mismo que buscar con ↑.
+  <div class="row"><span class="t">→ (flecha derecha) o End:</span> aceptar TODA la sugerencia gris.</div>
+  <div class="row"><span class="t">Option + →:</span> aceptar solo UNA palabra de la sugerencia.</div>
+  <div class="row"><span class="t">↑ / ↓:</span> otra cosa — busca en el historial lo que empieza con lo que ya escribiste.</div>
+</div>
+
+<div class="card clip">
+  <h2>Edición de línea (estilo macOS)</h2>
+  <table>
+    <tr><td class="key"><kbd>⌥ ←</kbd> / <kbd>⌥ →</kbd></td><td class="desc"><b>Saltar por palabra</b> (izquierda / derecha)</td></tr>
+    <tr><td class="key"><kbd>⌘ ←</kbd> / <kbd>⌘ →</kbd></td><td class="desc"><b>Inicio / fin</b> de la línea</td></tr>
+    <tr><td class="key"><kbd>⌘ ⌫</kbd></td><td class="desc"><b>Borrar hasta el inicio</b> de la línea (como en macOS)</td></tr>
+    <tr><td class="key"><kbd>⌥ ⌫</kbd></td><td class="desc"><b>Borrar la palabra</b> anterior</td></tr>
+    <tr><td class="key"><kbd>⌃k</kbd></td><td class="desc">Borrar del cursor <b>hasta el final</b></td></tr>
+    <tr><td class="key"><kbd>⌃a</kbd> / <kbd>⌃e</kbd></td><td class="desc">Inicio / fin (equivalente sin mouse)</td></tr>
+  </table>
+</div>
+
+<div class="card find">
+  <h2>Autosugerencias &amp; historial</h2>
+  <table>
+    <tr><td class="key"><kbd>→</kbd> / <kbd>End</kbd></td><td class="desc"><b>Aceptar</b> la sugerencia gris completa</td></tr>
+    <tr><td class="key"><kbd>⌥ →</kbd></td><td class="desc">Aceptar <b>una palabra</b> de la sugerencia</td></tr>
+    <tr><td class="key"><kbd>↑</kbd> / <kbd>↓</kbd></td><td class="desc"><b>Buscar en historial</b> por el prefijo que escribiste</td></tr>
+    <tr><td class="key"><kbd>⌃r</kbd></td><td class="desc"><b>Búsqueda interactiva</b> en todo el historial</td></tr>
+  </table>
+</div>
+
+<div class="card exp">
+  <h2>Carpetas &amp; archivos (zoxide + eza)</h2>
+  <table>
+    <tr><td class="key"><kbd>cd</kbd> <span class="muted">(= z)</span></td><td class="desc"><b>zoxide</b>: salta a carpetas frecuentes → <kbd>z kadmin</kbd>, <kbd>z uncc files</kbd></td></tr>
+    <tr><td class="key"><kbd>z -</kbd></td><td class="desc">Volver a la <b>carpeta anterior</b></td></tr>
+    <tr><td class="key"><kbd>zi</kbd></td><td class="desc">Elegir carpeta en modo <b>interactivo</b> (fzf)</td></tr>
+    <tr><td class="key"><kbd>ls</kbd> <span class="muted">(= eza)</span></td><td class="desc">Listar archivos con íconos</td></tr>
+  </table>
+</div>
+
+<div class="card diag">
+  <h2>Control &amp; limpieza</h2>
+  <table>
+    <tr><td class="key"><kbd>⌃l</kbd></td><td class="desc"><b>Limpiar</b> la pantalla (= clear)</td></tr>
+    <tr><td class="key"><kbd>⌃c</kbd></td><td class="desc"><b>Cancelar</b> el comando actual</td></tr>
+    <tr><td class="key"><kbd>⌃d</kbd></td><td class="desc"><b>Cerrar</b> la shell (EOF)</td></tr>
+    <tr><td class="key"><kbd>Tab</kbd></td><td class="desc"><b>Autocompletar</b> comando / ruta</td></tr>
+  </table>
+</div>
+
+<div class="card sess">
+  <h2>Tus aliases &amp; scripts</h2>
+  <table>
+    <tr><td class="key"><kbd>vim</kbd></td><td class="desc">abre <b>nvim</b></td></tr>
+    <tr><td class="key"><kbd>eslint-init</kbd></td><td class="desc">configura ESLint en el proyecto actual</td></tr>
+    <tr><td class="key"><kbd>cheatsheet</kbd></td><td class="desc">regenera este PDF</td></tr>
+    <tr><td class="key"><kbd>denos</kbd></td><td class="desc">deno run con permisos de env/net</td></tr>
+  </table>
+</div>
+
 <footer>
-  Neovim &amp; tmux · config de accel · github.com/accel33/dotfiles · leader Neovim = Espacio · prefix tmux = Ctrl+a
+  Neovim · tmux · terminal (zsh) · config de accel · github.com/accel33/dotfiles
 </footer>
 </body>
 </html>
