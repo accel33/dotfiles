@@ -1,6 +1,7 @@
 return {
   "nvim-telescope/telescope.nvim",
-  branch = "0.1.x",
+  -- rama por defecto (mantenida): trae el previewer standalone (#3566) compatible
+  -- con nvim-treesitter main. La vieja 0.1.x usaba ft_to_lang y crasheaba el preview.
   dependencies = {
     "nvim-lua/plenary.nvim",
     { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
@@ -15,10 +16,6 @@ return {
       defaults = {
         path_display = { "smart" },
         find_command = { "fd", "--type", "f", "--hidden", "--exclude", ".git" }, -- Add --hidden
-        -- Preview sin treesitter: este Telescope (0.1.x) usa la API vieja de
-        -- nvim-treesitter (ft_to_lang), que ya no existe en la rama main -> crasheaba
-        -- el preview. Con esto usa resaltado por regex (se ve bien igual).
-        preview = { treesitter = { enable = false } },
         mappings = {
           i = {
             ["<C-k>"] = actions.move_selection_previous, -- move to prev result

@@ -128,6 +128,24 @@ return {
       },
     })
 
+    -- eslint: SOLO conectarse si el proyecto tiene un archivo de config de eslint.
+    -- Así no molesta con "No ESLint configuration found" en scripts/proyectos sin eslint.
+    vim.lsp.config("eslint", {
+      root_dir = function(bufnr, on_dir)
+        local markers = {
+          ".eslintrc", ".eslintrc.js", ".eslintrc.cjs", ".eslintrc.yaml",
+          ".eslintrc.yml", ".eslintrc.json",
+          "eslint.config.js", "eslint.config.mjs", "eslint.config.cjs", "eslint.config.ts",
+        }
+        local fname = vim.api.nvim_buf_get_name(bufnr)
+        local found = vim.fs.find(markers, { upward = true, path = vim.fs.dirname(fname) })[1]
+        if found then
+          on_dir(vim.fs.dirname(found)) -- hay config -> eslint se activa aquí
+        end
+        -- sin config de eslint -> no llamamos on_dir -> el LSP no se conecta
+      end,
+    })
+
     -- TypeScript: servidor nativo en Go (tsgo = "TypeScript 7", preview, mucho más rápido
     -- y con soporte de monorepos). Si el binario 'tsgo' está instalado lo usamos; si no,
     -- caemos al clásico ts_ls. NUNCA los dos a la vez (diagnósticos/completado duplicados).
