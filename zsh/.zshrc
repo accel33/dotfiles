@@ -48,6 +48,10 @@ bindkey '^[[B' history-search-forward
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
+# aceptar la sugerencia gris con Ctrl+Espacio (además de → / Ctrl+F que ya funcionan)
+bindkey '^ ' autosuggest-accept
+bindkey '^@' autosuggest-accept  # algunos terminales mandan ^@ para Ctrl+Espacio
+
 # ---- Eza (better ls) -----
 alias ls="eza --icons=always"
 
