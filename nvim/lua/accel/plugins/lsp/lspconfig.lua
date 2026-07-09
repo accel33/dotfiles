@@ -109,5 +109,17 @@ return {
         end,
       },
     })
+
+    -- TypeScript: servidor nativo en Go (tsgo = "TypeScript 7", preview, mucho más rápido
+    -- y con soporte de monorepos). Si el binario 'tsgo' está instalado lo usamos; si no,
+    -- caemos al clásico ts_ls. NUNCA los dos a la vez (diagnósticos/completado duplicados).
+    --   Instalar tsgo:  npm install -g @typescript/native-preview
+    --   Volver a ts_ls: pon  use_tsgo = false  (abajo) y reinicia Neovim.
+    local use_tsgo = vim.fn.executable("tsgo") == 1
+    if use_tsgo then
+      vim.lsp.enable("tsgo")
+    else
+      vim.lsp.enable("ts_ls")
+    end
   end,
 }

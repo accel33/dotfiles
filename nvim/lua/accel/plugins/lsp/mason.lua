@@ -38,7 +38,9 @@ return {
       -- ahora trae lsp/stylua.lua con `cmd = { stylua, --lsp }` y el binario real
       -- no soporta --lsp -> exit code 2. Lo excluimos del auto-enable.
       automatic_enable = {
-        exclude = { "stylua", "stylua3p_ls" },
+        -- ts_ls lo habilitamos manualmente en lspconfig.lua (elegimos tsgo o ts_ls,
+        -- nunca los dos a la vez).
+        exclude = { "stylua", "stylua3p_ls", "ts_ls" },
       },
     })
 
