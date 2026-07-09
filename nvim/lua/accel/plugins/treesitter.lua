@@ -1,59 +1,38 @@
 return {
   "nvim-treesitter/nvim-treesitter",
-  event = { "BufReadPre", "BufNewFile" },
+  branch = "main", -- rama nueva (compatible con Neovim 0.11+/0.12). master está congelada.
+  lazy = false, -- se carga al inicio para registrar el autocmd de highlight
   build = ":TSUpdate",
   dependencies = {
     "windwp/nvim-ts-autotag",
   },
   config = function()
-    -- import nvim-treesitter plugin
-    local treesitter = require("nvim-treesitter.configs")
+    -- En la rama main la API cambió:
+    --   * los parsers se instalan con install()
+    --   * el highlight NO se activa en setup; se arranca por buffer con
+    --     vim.treesitter.start() en un autocmd FileType
+    require("nvim-treesitter").setup()
 
-    -- configure treesitter
-    treesitter.setup({ -- enable syntax highlighting
-      highlight = {
-        enable = true,
-      },
-      -- enable indentation
-      indent = { enable = true },
-      -- enable autotagging (w/ nvim-ts-autotag plugin)
-      autotag = {
-        enable = true,
-      },
-      -- ensure these language parsers are installed
-      ensure_installed = {
-        "json",
-        "javascript",
-        "typescript",
-        "tsx",
-        "yaml",
-        "html",
-        "css",
-        "prisma",
-        "markdown",
-        "markdown_inline",
-        "svelte",
-        "graphql",
-        "bash",
-        "lua",
-        "vim",
-        "dockerfile",
-        "gitignore",
-        "query",
-        "vimdoc",
-        "c",
-        "rust",
-        "tmux",
-      },
-      incremental_selection = {
-        enable = true,
-        keymaps = {
-          init_selection = "<C-space>",
-          node_incremental = "<C-space>",
-          scope_incremental = false,
-          node_decremental = "<bs>",
-        },
-      },
+    -- parsers a instalar (mismos que antes + tmux)
+    local ensure_installed = {
+      "json", "javascript", "typescript", "tsx", "yaml", "html", "css",
+      "prisma", "markdown", "markdown_inline", "svelte", "graphql", "bash",
+      "lua", "vim", "dockerfile", "gitignore", "query", "vimdoc", "c",
+      "rust", "tmux",
+    }
+    require("nvim-treesitter").install(ensure_installed)
+
+    -- autotag (cerrar/renombrar tags en JSX/HTML) — en main se configura aparte
+    require("nvim-ts-autotag").setup()
+
+    -- arrancar highlight + indent al abrir cada archivo (si hay parser instalado)
+    vim.api.nvim_create_autocmd("FileType", {
+      callback = function(args)
+        local ok = pcall(vim.treesitter.start)
+        if ok then
+          vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+        end
+      end,
     })
   end,
 }
