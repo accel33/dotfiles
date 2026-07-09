@@ -15,6 +15,10 @@ return {
       defaults = {
         path_display = { "smart" },
         find_command = { "fd", "--type", "f", "--hidden", "--exclude", ".git" }, -- Add --hidden
+        -- Preview sin treesitter: este Telescope (0.1.x) usa la API vieja de
+        -- nvim-treesitter (ft_to_lang), que ya no existe en la rama main -> crasheaba
+        -- el preview. Con esto usa resaltado por regex (se ve bien igual).
+        preview = { treesitter = { enable = false } },
         mappings = {
           i = {
             ["<C-k>"] = actions.move_selection_previous, -- move to prev result
