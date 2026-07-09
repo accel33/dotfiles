@@ -32,15 +32,32 @@ return {
         end,
       },
       mapping = cmp.mapping.preset.insert({
-        ["<C-k>"] = cmp.mapping.select_prev_item(), -- previous suggestion
-        ["<C-j>"] = cmp.mapping.select_next_item(), -- next suggestion
-        -- ["<Tab>"] = cmp.mapping.select_next_item(), -- next suggestion
+        ["<C-k>"] = cmp.mapping.select_prev_item(), -- subir en el menú
+        ["<C-j>"] = cmp.mapping.select_next_item(), -- bajar en el menú
         ["<C-b>"] = cmp.mapping.scroll_docs(-4),
         ["<C-f>"] = cmp.mapping.scroll_docs(4),
-        ["<C-Space>"] = cmp.mapping.complete(), -- show completion suggestions
-        ["<C-e>"] = cmp.mapping.abort(), -- close completion window
-        ["<CR>"] = cmp.mapping.confirm({ select = false }),
-        ["<Tab>"] = cmp.mapping.confirm({ select = false }),
+        ["<C-Space>"] = cmp.mapping.complete(), -- forzar el menú
+        ["<C-e>"] = cmp.mapping.abort(), -- cerrar el menú
+        ["<CR>"] = cmp.mapping.confirm({ select = false }), -- Enter confirma
+        -- Tab estilo moderno (supertab): cicla el menú y salta campos de snippet
+        ["<Tab>"] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            cmp.select_next_item()
+          elseif luasnip.expand_or_locally_jumpable() then
+            luasnip.expand_or_jump()
+          else
+            fallback() -- si no hay menú ni snippet, un Tab normal
+          end
+        end, { "i", "s" }),
+        ["<S-Tab>"] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            cmp.select_prev_item()
+          elseif luasnip.locally_jumpable(-1) then
+            luasnip.jump(-1)
+          else
+            fallback()
+          end
+        end, { "i", "s" }),
       }),
 
       -- sources for autocompletion
