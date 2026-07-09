@@ -12,6 +12,23 @@ config.font_size = 19
 
 config.enable_tab_bar = false
 
+-- ── Edición estilo macOS en la terminal ──────────────────────────────────
+-- Envía las secuencias que zsh ya entiende (modo emacs), sin config extra en zsh.
+-- OJO: aplica también dentro de nvim; ahí usa las motions de vim normalmente.
+local act = wezterm.action
+config.keys = {
+  -- Option + ←/→ : saltar por PALABRA  (esc-b / esc-f)
+  { key = "LeftArrow", mods = "OPT", action = act.SendString("\x1bb") },
+  { key = "RightArrow", mods = "OPT", action = act.SendString("\x1bf") },
+  -- Cmd + ←/→ : INICIO / FIN de línea  (Ctrl-A / Ctrl-E)
+  { key = "LeftArrow", mods = "CMD", action = act.SendString("\x01") },
+  { key = "RightArrow", mods = "CMD", action = act.SendString("\x05") },
+  -- Cmd + Backspace : borrar hasta el INICIO de la línea  (Ctrl-U)
+  { key = "Backspace", mods = "CMD", action = act.SendString("\x15") },
+  -- Option + Backspace : borrar la PALABRA anterior  (Ctrl-W)
+  { key = "Backspace", mods = "OPT", action = act.SendString("\x17") },
+}
+
 -- config.window_decorations = "RESIZE"
 
 -- config.window_background_opacity = 0.9

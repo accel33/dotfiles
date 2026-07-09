@@ -21,6 +21,10 @@ alias vim="nvim"
 alias denos='deno run --allow-env --allow-net'
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+# ---- Mis scripts de dotfiles ----
+alias eslint-init="$HOME/dotfiles/docs/setup-eslint.sh" # configura eslint en el proyecto actual
+alias cheatsheet="$HOME/dotfiles/docs/build-pdf.sh"     # regenera el PDF del cheatsheet
+
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
