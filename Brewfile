@@ -17,6 +17,8 @@ brew "k9s"
 brew "kubernetes-cli"
 # Simple terminal UI for git commands
 brew "lazygit"
+# Incremental parsing library
+brew "tree-sitter"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
 # Theme for zsh
@@ -46,6 +48,8 @@ brew "zsh-syntax-highlighting"
 cask "font-meslo-lg-nerd-font"
 # Set of tools to manage resources and applications hosted on Google Cloud
 cask "gcloud-cli"
+# Display key code, unicode value and modifier keys state for any key combination
+cask "key-codes"
 # Clipboard manager
 cask "maccy"
 # Collaboration platform for API development
@@ -69,4 +73,6 @@ vscode "vue.volar"
 vscode "wesbos.theme-cobalt2"
 vscode "yoavbls.pretty-ts-errors"
 npm "@anthropic-ai/claude-code"
+npm "@typescript/native-preview"
 npm "corepack"
+npm "tree-sitter-cli"

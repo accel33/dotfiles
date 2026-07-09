@@ -1,6 +1,8 @@
 return {
   "nvim-treesitter/nvim-treesitter",
-  branch = "main", -- rama nueva (compatible con Neovim 0.11+/0.12). master está congelada.
+  -- rama nueva (compatible con Neovim 0.11+/0.12). master está congelada.
+  -- REQUISITO: el CLI de tree-sitter (npm i -g tree-sitter-cli) para compilar parsers.
+  branch = "main",
   lazy = false, -- se carga al inicio para registrar el autocmd de highlight
   build = ":TSUpdate",
   dependencies = {
