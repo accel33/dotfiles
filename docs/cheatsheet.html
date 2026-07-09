@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<style>
+  @page { size: A4; margin: 14mm 14mm; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root{
+    --ink:#1b2130; --muted:#5c6675; --line:#e4e8f0; --soft:#f6f8fc;
+    --kbd-bg:#2b3140; --kbd-fg:#eef1f6; --spc:#0ea5a4;
+    --nv:#7c3aed; --tm:#0891b2;
+    --gen:#6b7280; --clip:#0ea5a4; --win:#2563eb; --tab:#7c3aed;
+    --exp:#059669; --find:#d97706; --lsp:#dc2626; --git:#e11d48;
+    --diag:#9333ea; --fmt:#0891b2; --sess:#65a30d; --edit:#db2777; --cmp:#4f46e5;
+  }
+  body{ font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif; color:var(--ink);
+        font-size:11px; line-height:1.5; }
+  h1.big{ font-size:23px; letter-spacing:.3px; }
+  h1.big small{ font-weight:400; color:var(--muted); font-size:12px; }
+  .part{ font-size:16px; font-weight:800; color:#fff; padding:7px 12px; border-radius:7px;
+         margin:20px 0 12px; letter-spacing:.4px; }
+  .part.nvim{ background:linear-gradient(90deg,var(--nv),#a855f7); }
+  .part.tmux{ background:linear-gradient(90deg,var(--tm),#22b8cf); page-break-before:always; }
+  .intro{ color:var(--muted); margin-bottom:14px; }
+  .intro b{ color:var(--spc); }
+
+  .legend{ display:grid; grid-template-columns:repeat(3,1fr); gap:5px 16px;
+           background:var(--soft); border:1px solid var(--line); border-radius:8px;
+           padding:11px 16px; margin-bottom:16px; }
+  .legend div{ font-size:10.5px; }
+  .legend .k{ font-weight:800; }
+
+  .card{ break-inside:avoid; border:1px solid var(--line); border-radius:8px;
+         margin-bottom:13px; overflow:hidden; }
+  .card h2{ font-size:12.5px; color:#fff; padding:6px 12px; letter-spacing:.2px;
+            display:flex; justify-content:space-between; align-items:baseline; }
+  .card h2 .why{ font-weight:400; font-size:10px; opacity:.92; }
+  table{ width:100%; border-collapse:collapse; }
+  td{ padding:5px 12px; vertical-align:top; border-top:1px solid #eef1f6; }
+  tr:first-child td{ border-top:none; }
+  td.key{ white-space:nowrap; width:130px; }
+  td.desc b{ color:#111; }
+  td.desc .d{ display:block; color:var(--muted); font-size:9.8px; line-height:1.4; margin-top:1px; }
+  kbd{ background:var(--kbd-bg); color:var(--kbd-fg); border-radius:4px;
+       padding:1px 5px; font-family:"SF Mono",Menlo,Consolas,monospace;
+       font-size:9.6px; white-space:nowrap; display:inline-block; margin:1px 0; }
+  kbd.sp{ background:var(--spc); }
+  .muted{ color:var(--muted); font-style:italic; }
+
+  .note{ background:#fff8ec; border:1px solid #f3d9a6; border-left:4px solid #e0a343;
+         border-radius:7px; padding:9px 13px; margin-bottom:13px; font-size:10.3px; }
+  .note b{ color:#a5680c; }
+  .explain{ background:#eef4ff; border:1px solid #cddcff; border-left:4px solid #2563eb;
+            border-radius:7px; padding:10px 14px; margin-bottom:13px; font-size:10.3px; }
+  .explain b{ color:#1d4ed8; }
+  .explain .row{ margin:4px 0; }
+  .explain .t{ font-weight:700; color:#111; }
+
+  .gen h2{background:var(--gen)} .clip h2{background:var(--clip)} .win h2{background:var(--win)}
+  .tab h2{background:var(--tab)} .exp h2{background:var(--exp)} .find h2{background:var(--find)}
+  .lsp h2{background:var(--lsp)} .git h2{background:var(--git)} .diag h2{background:var(--diag)}
+  .fmt h2{background:var(--fmt)} .sess h2{background:var(--sess)} .edit h2{background:var(--edit)}
+  .cmp h2{background:var(--cmp)}
+  footer{ margin-top:16px; border-top:1px solid var(--line); padding-top:6px;
+          font-size:9px; color:var(--muted); text-align:center; }
+</style>
+</head>
+<body>
+
+<h1 class="big">Cheatsheet — Neovim &amp; tmux <small>· config de accel</small></h1>
+
+<!-- ============================ NEOVIM ============================ -->
+<div class="part nvim">⌨️  NEOVIM</div>
+<div class="intro">Leader = <kbd class="sp">Espacio</kbd>. La mayoría de comandos empiezan con Espacio + una letra que recuerda la acción.
+<b>Tip:</b> presiona <kbd class="sp">Espacio</kbd> y espera un momento → <b>which-key</b> te muestra un menú con todas las opciones disponibles.</div>
+
+<div class="legend">
+  <div><span class="k" style="color:var(--exp)">e</span> · Explorer (árbol de archivos)</div>
+  <div><span class="k" style="color:var(--find)">f</span> · Find (búsqueda difusa)</div>
+  <div><span class="k" style="color:var(--win)">s</span> · Split (ventanas)</div>
+  <div><span class="k" style="color:var(--tab)">t</span> · Tab / Terminal</div>
+  <div><span class="k" style="color:var(--git)">h</span> · Hunk (cambios de git)</div>
+  <div><span class="k" style="color:var(--diag)">x</span> · Trouble (errores)</div>
+  <div><span class="k" style="color:var(--fmt)">m</span> · forMat &nbsp;·&nbsp; <span class="k" style="color:var(--fmt)">l</span> · Lint</div>
+  <div><span class="k" style="color:var(--sess)">w</span> · Workspace (sesión)</div>
+  <div><span class="k" style="color:var(--lsp)">g</span> · Goto &nbsp;·&nbsp; <span class="k" style="color:var(--lsp)">r/c</span> · rename/code</div>
+</div>
+
+<div class="card gen">
+  <h2>General &amp; Movimiento</h2>
+  <table>
+    <tr><td class="key"><kbd>kj</kbd> / <kbd>jk</kbd></td><td class="desc"><b>Salir a modo normal</b> estando en insert<span class="d">Más rápido que estirar la mano al Esc</span></td></tr>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>nh</kbd></td><td class="desc"><b>Quitar el resaltado</b> de la última búsqueda<span class="d">nh = No Highlight. Tras buscar con / queda todo pintado; esto lo limpia</span></td></tr>
+    <tr><td class="key"><kbd>gb</kbd></td><td class="desc"><b>Volver atrás</b> en el historial de saltos<span class="d">Regresa al lugar donde estabas antes de un salto (gd, búsqueda, etc.)</span></td></tr>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>+</kbd> / <kbd class="sp">␣</kbd><kbd>-</kbd></td><td class="desc"><b>Incrementar / decrementar</b> el número bajo el cursor</td></tr>
+  </table>
+</div>
+
+<div class="card clip">
+  <h2>Portapapeles <span class="why">solo lo que copias con y va al portapapeles del sistema</span></h2>
+  <table>
+    <tr><td class="key"><kbd>y</kbd> <kbd>yy</kbd></td><td class="desc"><b>Copiar (yank)</b> → portapapeles de macOS<span class="d">Lo pegas con Cmd+V en cualquier otra app</span></td></tr>
+    <tr><td class="key"><kbd>p</kbd></td><td class="desc"><b>Pegar</b> el portapapeles<span class="d">Sirve para pegar tanto tus yanks como lo que copiaste fuera con Cmd+C</span></td></tr>
+    <tr><td class="key"><kbd>d</kbd> <kbd>c</kbd> <kbd>x</kbd></td><td class="desc"><b>Borrar / cambiar</b> SIN tocar el portapapeles<span class="d">Van al "black hole": borras cosas sin perder lo que tenías copiado</span></td></tr>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>d</kbd></td><td class="desc"><b>Cortar</b> SÍ enviando al portapapeles<span class="d">⚠️ En archivos con LSP esta tecla muestra el diagnóstico de la línea (gana el LSP)</span></td></tr>
+    <tr><td class="key"><kbd>p</kbd> <span class="muted">(visual)</span></td><td class="desc"><b>Pegar encima</b> de una selección sin perder lo copiado</td></tr>
+  </table>
+</div>
+
+<div class="card win">
+  <h2>Ventanas / Splits <span class="why">s = Split</span></h2>
+  <table>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>sv</kbd></td><td class="desc"><b>Split vertical</b> (dos paneles lado a lado)</td></tr>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>sh</kbd></td><td class="desc"><b>Split horizontal</b> (uno arriba, otro abajo)</td></tr>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>se</kbd></td><td class="desc"><b>Igualar</b> el tamaño de los splits</td></tr>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>sx</kbd></td><td class="desc"><b>Cerrar</b> el split actual</td></tr>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>sm</kbd></td><td class="desc"><b>Maximizar / restaurar</b> el split (foco temporal)</td></tr>
+    <tr><td class="key"><kbd>⌃h</kbd><kbd>⌃j</kbd><kbd>⌃k</kbd><kbd>⌃l</kbd></td><td class="desc"><b>Moverte entre splits</b> (y entre panes de tmux)<span class="d">Mismas teclas funcionan en vim y en tmux gracias a vim-tmux-navigator</span></td></tr>
+  </table>
+</div>
+
+<div class="card tab">
+  <h2>Pestañas &amp; Terminal <span class="why">t = Tab</span></h2>
+  <table>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>to</kbd></td><td class="desc"><b>Abrir</b> pestaña nueva &nbsp; <span class="muted">(to = tab open)</span></td></tr>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>tx</kbd></td><td class="desc"><b>Cerrar</b> pestaña</td></tr>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>tn</kbd> / <kbd class="sp">␣</kbd><kbd>tp</kbd></td><td class="desc"><b>Siguiente / anterior</b> pestaña</td></tr>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>tf</kbd></td><td class="desc"><b>Abrir el buffer actual</b> en una pestaña nueva</td></tr>
+    <tr><td class="key"><span class="muted">terminal</span></td><td class="desc">Para una terminal usa un <b>pane de tmux</b> (Ctrl+j al de abajo), no una terminal interna de nvim</td></tr>
+  </table>
+</div>
+
+<div class="card exp">
+  <h2>Explorador de archivos (nvim-tree) <span class="why">e = Explorer</span></h2>
+  <table>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>ee</kbd></td><td class="desc"><b>Abrir / cerrar</b> el árbol de archivos</td></tr>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>ef</kbd></td><td class="desc"><b>Ubicar</b> el archivo actual dentro del árbol</td></tr>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>ea</kbd></td><td class="desc"><b>Enfocar</b> el árbol (saltar el cursor ahí)</td></tr>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>ec</kbd> / <kbd class="sp">␣</kbd><kbd>er</kbd></td><td class="desc"><b>Colapsar</b> todo &nbsp;·&nbsp; <b>Refrescar</b></td></tr>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>ed</kbd></td><td class="desc"><b>Duplicar</b> el archivo seleccionado</td></tr>
+  </table>
+</div>
+
+<div class="card exp">
+  <h2>Dentro del árbol <span class="why">teclas cuando el cursor está en el explorador</span></h2>
+  <table>
+    <tr><td class="key"><kbd>a</kbd></td><td class="desc"><b>Crear</b> archivo o carpeta<span class="d">Termina el nombre en / para crear carpeta (ej. components/)</span></td></tr>
+    <tr><td class="key"><kbd>r</kbd> &nbsp; <kbd>d</kbd></td><td class="desc"><b>Renombrar</b> &nbsp;·&nbsp; <b>Borrar</b> (va a la Papelera)</td></tr>
+    <tr><td class="key"><kbd>x</kbd> <kbd>c</kbd> <kbd>p</kbd></td><td class="desc"><b>Cortar · Copiar · Pegar</b> archivos</td></tr>
+    <tr><td class="key"><kbd>y</kbd> <kbd>Y</kbd> <kbd>gy</kbd> <kbd>ge</kbd></td><td class="desc"><b>Copiar al portapapeles:</b><span class="d"><b>y</b> = nombre (index.js) · <b>Y</b> = ruta relativa (src/index.js) · <b>gy</b> = ruta absoluta (/Users/…/src/index.js) · <b>ge</b> = nombre sin extensión (index)</span></td></tr>
+    <tr><td class="key"><kbd>⏎</kbd> <kbd>⌃v</kbd> <kbd>⌃x</kbd> <kbd>⌃t</kbd></td><td class="desc"><b>Abrir</b> · en <b>split vertical</b> · en <b>split horizontal</b> · en <b>pestaña nueva</b></td></tr>
+    <tr><td class="key"><kbd>Tab</kbd> &nbsp; <kbd>P</kbd> &nbsp; <kbd>-</kbd></td><td class="desc"><b>Previsualizar</b> sin salir del árbol · ir a la <b>carpeta padre</b> · <b>subir</b> un nivel de raíz</td></tr>
+    <tr><td class="key"><kbd>H</kbd> <kbd>I</kbd> <kbd>E</kbd> <kbd>W</kbd></td><td class="desc"><b>Ver ocultos</b> (dotfiles) · ver <b>git-ignored</b> · <b>Expandir</b> todo · <b>Colapsar</b> todo</td></tr>
+    <tr><td class="key"><kbd>g?</kbd></td><td class="desc"><b>Ayuda</b>: lista TODOS los atajos del árbol</td></tr>
+  </table>
+</div>
+
+<div class="card find">
+  <h2>Búsqueda (Telescope) <span class="why">f = Find</span></h2>
+  <table>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>ff</kbd></td><td class="desc"><b>Buscar archivos</b> por nombre en el proyecto<span class="d">Escribe parte del nombre; es difuso (no necesita ser exacto)</span></td></tr>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>fr</kbd></td><td class="desc"><b>Archivos recientes</b> (los que abriste últimamente)</td></tr>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>fs</kbd></td><td class="desc"><b>Buscar texto</b> dentro de todos los archivos (live grep)<span class="d">Busca una palabra/frase en TODO el proyecto en tiempo real</span></td></tr>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>fc</kbd></td><td class="desc"><b>Buscar la palabra bajo el cursor</b> en el proyecto</td></tr>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>fa</kbd></td><td class="desc"><b>Búsqueda amplificada</b> solo en los archivos abiertos</td></tr>
+    <tr><td class="key"><kbd>⌃j</kbd> <kbd>⌃k</kbd> &nbsp; <kbd>⌃q</kbd></td><td class="desc">Dentro del buscador: <b>bajar / subir</b> · enviar resultados a <b>quickfix</b></td></tr>
+  </table>
+</div>
+
+<div class="explain">
+  <b>🧭 LSP: ¿cuál uso? (definición vs declaración vs referencias…)</b>
+  <div class="row"><span class="t">Definición (gd):</span> te lleva a donde algo está <b>escrito/implementado de verdad</b>. Ej: sobre <code>miFuncion()</code> → salta al cuerpo de esa función. <b>Es el que más usarás.</b></div>
+  <div class="row"><span class="t">Declaración (gD):</span> dónde se <b>declara</b> (se anuncia que existe) sin necesariamente implementarlo. En JS/TS suele coincidir con la definición; se nota más en C/C++ (te lleva al <code>.h</code>).</div>
+  <div class="row"><span class="t">Referencias (gR):</span> <b>todos los lugares donde se usa</b> ese símbolo en el proyecto. Ideal para "¿qué se rompe si cambio esto?".</div>
+  <div class="row"><span class="t">Implementaciones (gi):</span> para <b>interfaces / clases abstractas</b>: dónde se implementan concretamente. Ej: una interfaz <code>Repository</code> → sus clases que la cumplen.</div>
+  <div class="row"><span class="t">Definición de tipo (gt):</span> te lleva a la <b>definición del tipo</b> de una variable. Ej: sobre <code>const u: User</code> → salta a <code>interface User</code>.</div>
+  <div class="row"><span class="t">Hover (K):</span> muestra <b>documentación y tipo</b> en un popup, sin moverte del lugar.</div>
+  <div class="row" style="margin-top:6px;"><span class="t">Servidor TS:</span> <b>tsgo</b> (TypeScript 7 nativo en Go, preview — más rápido, soporta monorepos). Para volver al clásico ts_ls: <code>use_tsgo = false</code> en <code>lspconfig.lua</code>. Node (<code>fs</code>, <code>path</code>…) autocompleta si hay <code>@types/node</code> en la carpeta padre.</div>
+</div>
+
+<div class="card lsp">
+  <h2>LSP: navegación por el código <span class="why">g = Goto</span></h2>
+  <table>
+    <tr><td class="key"><kbd>gd</kbd></td><td class="desc"><b>Ir a la definición</b> (dónde se implementa)</td></tr>
+    <tr><td class="key"><kbd>gD</kbd></td><td class="desc"><b>Ir a la declaración</b></td></tr>
+    <tr><td class="key"><kbd>gR</kbd></td><td class="desc"><b>Ver referencias</b> (todos los usos)</td></tr>
+    <tr><td class="key"><kbd>gi</kbd></td><td class="desc"><b>Ver implementaciones</b> (de una interfaz)</td></tr>
+    <tr><td class="key"><kbd>gt</kbd></td><td class="desc"><b>Ir a la definición del tipo</b></td></tr>
+    <tr><td class="key"><kbd>K</kbd></td><td class="desc"><b>Documentación / tipo</b> en popup (hover, con borde)</td></tr>
+    <tr><td class="key"><kbd>⌃s</kbd></td><td class="desc"><b>Signature help</b>: los parámetros de la función<span class="d">Útil al escribir la llamada; funciona en normal e insert</span></td></tr>
+  </table>
+</div>
+
+<div class="card lsp">
+  <h2>LSP: acciones y diagnósticos <span class="why">c=code · r=rename · d=diagnostic</span></h2>
+  <table>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>ca</kbd></td><td class="desc"><b>Code actions</b>: arreglos que ofrece el editor<span class="d">Auto-importar, corregir error, refactor rápido, etc.</span></td></tr>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>rn</kbd></td><td class="desc"><b>Renombrar símbolo</b> en todo el proyecto (smart rename)<span class="d">Cambia la variable/función en todos sus usos a la vez</span></td></tr>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>rs</kbd></td><td class="desc"><b>Reiniciar el LSP</b> (si se cuelga o deja de sugerir)</td></tr>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>d</kbd></td><td class="desc"><b>Ver el error/warning</b> de la línea (popup)</td></tr>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>D</kbd></td><td class="desc"><b>Lista de todos los diagnósticos</b> del archivo</td></tr>
+    <tr><td class="key"><kbd>[d</kbd> / <kbd>]d</kbd></td><td class="desc"><b>Saltar al diagnóstico</b> anterior / siguiente</td></tr>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>ih</kbd></td><td class="desc"><b>Inlay hints</b>: mostrar/ocultar tipos inline<span class="d">Anotaciones grises de tipos y nombres de parámetro (i=inlay h=hints). Vienen encendidos por defecto</span></td></tr>
+  </table>
+</div>
+
+<div class="card git">
+  <h2>Git — cambios por bloque (gitsigns) <span class="why">h = Hunk</span></h2>
+  <table>
+    <tr><td class="key"><span class="muted">¿hunk?</span></td><td class="desc">Un <b>hunk</b> es un <b>bloque de líneas consecutivas modificadas</b> respecto al último commit.</td></tr>
+    <tr><td class="key"><kbd>]h</kbd> / <kbd>[h</kbd></td><td class="desc"><b>Saltar</b> al hunk siguiente / anterior</td></tr>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>hs</kbd> / <kbd>hr</kbd></td><td class="desc"><b>Stage / Reset</b> del hunk<span class="d">stage = marcarlo para el commit · reset = descartar el cambio</span></td></tr>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>hS</kbd> / <kbd>hR</kbd></td><td class="desc"><b>Stage / Reset</b> del archivo entero</td></tr>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>hp</kbd></td><td class="desc"><b>Previsualizar</b> el hunk (qué cambió)</td></tr>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>hu</kbd></td><td class="desc"><b>Deshacer</b> el último stage</td></tr>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>hb</kbd> / <kbd>hB</kbd></td><td class="desc"><b>Blame de la línea</b> (quién la cambió) · toggle blame permanente</td></tr>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>hd</kbd></td><td class="desc"><b>Diff</b> del archivo vs. git</td></tr>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>lg</kbd></td><td class="desc"><b>Abrir LazyGit</b>: interfaz completa de git (commit, push, ramas…)</td></tr>
+  </table>
+</div>
+
+<div class="card diag">
+  <h2>Trouble — panel de errores <span class="why">x</span></h2>
+  <table>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>xx</kbd></td><td class="desc"><b>Abrir/cerrar</b> el panel Trouble</td></tr>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>xd</kbd> / <kbd>xw</kbd></td><td class="desc"><b>Diagnósticos</b> del documento / de todo el workspace</td></tr>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>xq</kbd> / <kbd>xl</kbd></td><td class="desc">Lista <b>quickfix</b> / <b>loclist</b> en formato bonito</td></tr>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>xt</kbd></td><td class="desc"><b>TODOs</b> del proyecto (TODO, FIXME, HACK…)</td></tr>
+  </table>
+</div>
+
+<div class="card fmt">
+  <h2>Formato &amp; Lint <span class="why">m = forMat · l = Lint</span></h2>
+  <table>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>mp</kbd></td><td class="desc"><b>Formatear</b> el archivo o la selección<span class="d">Usa prettier (JS/TS/JSON/YAML/MD) o stylua (Lua)</span></td></tr>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>l</kbd></td><td class="desc"><b>Lint</b> ahora (eslint_d) — buscar problemas de estilo/errores</td></tr>
+    <tr><td class="key"><span class="muted">automático</span></td><td class="desc">Se <b>formatea solo al guardar</b> y se hace <b>lint al guardar / salir de insert</b></td></tr>
+  </table>
+</div>
+
+<div class="card sess">
+  <h2>Sesiones de trabajo (auto-session) <span class="why">w = Workspace</span></h2>
+  <table>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>ws</kbd></td><td class="desc"><b>Guardar</b> la sesión de esta carpeta (archivos abiertos, layout)</td></tr>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>wr</kbd></td><td class="desc"><b>Restaurar</b> la sesión de esta carpeta<span class="d">Vuelves a un proyecto y recuperas todo como lo dejaste</span></td></tr>
+  </table>
+</div>
+
+<div class="card edit">
+  <h2>Comentarios &amp; Surround <span class="why">gc = go comment · s = surround</span></h2>
+  <table>
+    <tr><td class="key"><kbd>gcc</kbd></td><td class="desc"><b>Comentar / descomentar</b> la línea actual (toggle)</td></tr>
+    <tr><td class="key"><kbd>gc</kbd> + mov</td><td class="desc"><b>Comentar por movimiento</b><span class="d">gc3j = 3 líneas · gcip = párrafo · gcG = hasta el final</span></td></tr>
+    <tr><td class="key"><kbd>gc</kbd> <span class="muted">(visual)</span> / <kbd class="sp">␣</kbd><kbd>/</kbd></td><td class="desc"><b>Comentar la selección</b><span class="d">En JSX/HTML el estilo de comentario se ajusta solo</span></td></tr>
+    <tr><td class="key"><kbd>ys</kbd>{mov}{c}</td><td class="desc"><b>Rodear</b> con comillas/paréntesis/tag<span class="d">ej. ysiw" → rodea la palabra con comillas: "palabra"</span></td></tr>
+    <tr><td class="key"><kbd>ds</kbd>{c} &nbsp; <kbd>cs</kbd>{a}{b}</td><td class="desc"><b>Borrar</b> envoltorio (ds") &nbsp;·&nbsp; <b>Cambiar</b> envoltorio (cs"' pasa de " a ')</td></tr>
+  </table>
+</div>
+
+<div class="card cmp">
+  <h2>Autocompletado (en modo insert) <span class="why">nvim-cmp</span></h2>
+  <table>
+    <tr><td class="key"><kbd>⌃Space</kbd></td><td class="desc"><b>Mostrar sugerencias</b> manualmente</td></tr>
+    <tr><td class="key"><kbd>⌃j</kbd> / <kbd>⌃k</kbd></td><td class="desc"><b>Bajar / subir</b> en la lista de sugerencias</td></tr>
+    <tr><td class="key"><kbd>⏎</kbd> / <kbd>⇥</kbd></td><td class="desc"><b>Confirmar</b> la sugerencia seleccionada</td></tr>
+    <tr><td class="key"><kbd>⌃b</kbd> / <kbd>⌃f</kbd> &nbsp; <kbd>⌃e</kbd></td><td class="desc"><b>Scroll</b> de la documentación &nbsp;·&nbsp; <b>cerrar</b> el menú</td></tr>
+  </table>
+</div>
+
+
+<!-- ============================ TMUX ============================ -->
+<div class="part tmux">🖥️  TMUX</div>
+<div class="intro">Prefix = <kbd class="sp">Ctrl+a</kbd>. Casi todo empieza así: presionas <kbd class="sp">Ctrl+a</kbd>, <b>sueltas</b>, y luego la tecla.
+Abajo lo escribo como <kbd class="sp">⌃a</kbd> <kbd>tecla</kbd>.</div>
+
+<div class="explain">
+  <b>🧠 Modelo mental — tmux tiene 3 niveles:</b>
+  <div class="row"><span class="t">Sesión</span> = un proyecto completo (ej. "kambista"). Sobrevive aunque cierres la terminal.</div>
+  <div class="row"><span class="t">Window</span> (ventana) = una pestaña dentro de la sesión (ej. editor / servidor / git).</div>
+  <div class="row"><span class="t">Pane</span> (panel) = una división visual dentro de una ventana.</div>
+  <div class="row" style="margin-top:6px;">Tus sesiones se <b>auto-guardan cada 15 min</b> y se <b>restauran solas</b> al reiniciar (resurrect + continuum).</div>
+</div>
+
+<div class="card sess">
+  <h2>Sesiones <span class="why">lo que sobrevive al cerrar la terminal</span></h2>
+  <table>
+    <tr><td class="key"><kbd>tmux new -s api</kbd></td><td class="desc"><b>Crear</b> sesión con nombre (desde la terminal)<span class="d">Hazlo siempre con nombre para reconocerla luego</span></td></tr>
+    <tr><td class="key"><kbd>tmux ls</kbd></td><td class="desc"><b>Listar</b> sesiones</td></tr>
+    <tr><td class="key"><kbd>tmux attach -t api</kbd></td><td class="desc"><b>Entrar</b> a una sesión existente</td></tr>
+    <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>d</kbd></td><td class="desc"><b>Detach</b>: salir dejando todo corriendo por detrás<span class="d">La tecla estrella de tmux. Cierras la terminal y nada se pierde</span></td></tr>
+    <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>s</kbd></td><td class="desc"><b>Árbol de sesiones</b> (navega ↑↓, Enter entra)<span class="d">Úsalo para saltar entre sesiones SIN el error de "nesting"</span></td></tr>
+    <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>$</kbd></td><td class="desc"><b>Renombrar</b> la sesión</td></tr>
+    <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>(</kbd> / <kbd>)</kbd></td><td class="desc"><b>Sesión</b> anterior / siguiente</td></tr>
+    <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>L</kbd></td><td class="desc"><b>Última sesión</b> donde estuviste (toggle)</td></tr>
+    <tr><td class="key"><kbd>tmux kill-server</kbd></td><td class="desc"><b>Matar todo</b> y empezar de cero (desde la terminal)</td></tr>
+  </table>
+</div>
+
+<div class="card tab">
+  <h2>Windows (pestañas)</h2>
+  <table>
+    <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>c</kbd></td><td class="desc"><b>Crear</b> window &nbsp; <span class="muted">(c = create)</span></td></tr>
+    <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>,</kbd></td><td class="desc"><b>Renombrar</b> la window (ponles nombre: editor, server…)</td></tr>
+    <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>1</kbd>…<kbd>9</kbd></td><td class="desc"><b>Ir</b> a la window N &nbsp;<span class="muted">(las tuyas empiezan en 1)</span></td></tr>
+    <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>n</kbd> / <kbd>p</kbd></td><td class="desc"><b>Siguiente / anterior</b> window</td></tr>
+    <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>w</kbd></td><td class="desc"><b>Árbol</b> de windows de todas las sesiones</td></tr>
+    <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>&amp;</kbd></td><td class="desc"><b>Cerrar</b> la window (pide confirmación)</td></tr>
+    <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>f</kbd></td><td class="desc"><b>Buscar</b> window por texto</td></tr>
+  </table>
+</div>
+
+<div class="card win">
+  <h2>Panes (paneles) <span class="why">donde vives el 80% del tiempo</span></h2>
+  <table>
+    <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>v</kbd></td><td class="desc"><b>Split vertical</b> (lado a lado)</td></tr>
+    <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>-</kbd></td><td class="desc"><b>Split horizontal</b> (arriba / abajo)</td></tr>
+    <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>x</kbd></td><td class="desc"><b>Cerrar</b> el pane (sin confirmación)</td></tr>
+    <tr><td class="key"><kbd>⌃h</kbd> <kbd>⌃j</kbd> <kbd>⌃k</kbd> <kbd>⌃l</kbd></td><td class="desc"><b>Moverte entre panes</b> — SIN prefix<span class="d">Las mismas teclas saltan también a los splits de Neovim</span></td></tr>
+    <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>h/j/k/l</kbd></td><td class="desc"><b>Redimensionar</b> el pane (se puede repetir sin re-prefix)</td></tr>
+    <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>m</kbd></td><td class="desc"><b>Zoom</b>: el pane a pantalla completa; repite para volver<span class="d">Úsalo mucho para enfocarte en un pane</span></td></tr>
+    <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>q</kbd></td><td class="desc"><b>Mostrar números</b> de pane → presiona el número para saltar</td></tr>
+    <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>Space</kbd></td><td class="desc"><b>Rotar layouts</b> predefinidos</td></tr>
+    <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>{</kbd> / <kbd>}</kbd></td><td class="desc"><b>Intercambiar</b> pane con el anterior / siguiente</td></tr>
+    <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>!</kbd></td><td class="desc"><b>Convertir</b> el pane en una window propia</td></tr>
+  </table>
+</div>
+
+<div class="card clip">
+  <h2>Copy mode (scroll y copiar) <span class="why">estilo vim</span></h2>
+  <table>
+    <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>[</kbd></td><td class="desc"><b>Entrar</b> a copy mode (o solo scrollea con el mouse)</td></tr>
+    <tr><td class="key"><kbd>h j k l</kbd> <kbd>/</kbd> <kbd>gg</kbd> <kbd>G</kbd></td><td class="desc"><b>Moverte</b> como en vim (buscar con /, inicio gg, fin G)</td></tr>
+    <tr><td class="key"><kbd>v</kbd> → mover → <kbd>y</kbd></td><td class="desc"><b>Seleccionar y copiar</b> al portapapeles de macOS<span class="d">Con y te quedas en copy mode; luego pegas con Cmd+V donde sea</span></td></tr>
+    <tr><td class="key">🖱️ arrastrar</td><td class="desc"><b>Seleccionar con mouse</b> → al soltar, copia al portapapeles y sale</td></tr>
+    <tr><td class="key"><kbd>q</kbd></td><td class="desc"><b>Salir</b> de copy mode</td></tr>
+  </table>
+</div>
+
+<div class="card fmt">
+  <h2>Config, plugins y ayuda</h2>
+  <table>
+    <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>r</kbd></td><td class="desc"><b>Recargar</b> la config (verás "✔️ tmux config reloaded")</td></tr>
+    <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>I</kbd></td><td class="desc"><b>Instalar</b> plugins nuevos (tpm) &nbsp;<span class="muted">(I mayúscula)</span></td></tr>
+    <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>U</kbd></td><td class="desc"><b>Actualizar</b> plugins</td></tr>
+    <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>?</kbd></td><td class="desc"><b>Ver TODOS</b> los atajos activos</td></tr>
+    <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>:</kbd></td><td class="desc"><b>Línea de comandos</b> de tmux</td></tr>
+    <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>⌃s</kbd> / <kbd>⌃r</kbd></td><td class="desc"><b>Guardar / restaurar</b> sesiones manualmente (resurrect)</td></tr>
+  </table>
+</div>
+
+<div class="note">
+  <b>Notas útiles de tmux:</b> el <b>mouse está activado</b> (click para elegir pane, arrastra bordes para redimensionar, scroll, click en pestañas).
+  Las windows y panes <b>empiezan en 1</b> y se <b>renumeran</b> al cerrar. Para mandar un <kbd>Ctrl+a</kbd> literal a un programa, presiónalo <b>dos veces</b>.
+</div>
+
+<footer>
+  Neovim &amp; tmux · config de accel · github.com/accel33/dotfiles · leader Neovim = Espacio · prefix tmux = Ctrl+a
+</footer>
+</body>
+</html>
