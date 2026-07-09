@@ -47,5 +47,14 @@ opt.clipboard:append("unnamedplus") -- use system clipboard as default register
 opt.splitright = true -- split vertical window to the right
 opt.splitbelow = true -- split horizontal window to the bottom
 
+-- no continuar comentarios automáticamente:
+--   o = al abrir línea con o/O sobre un comentario  ·  r = al dar Enter dentro de uno
+-- (autocmd porque muchos ftplugins re-activan formatoptions al abrir cada archivo)
+vim.api.nvim_create_autocmd("FileType", {
+  callback = function()
+    vim.opt_local.formatoptions:remove({ "o", "r" })
+  end,
+})
+
 
 
