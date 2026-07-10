@@ -38,6 +38,18 @@ npm install -g @typescript/native-preview tree-sitter-cli   # tsgo + parsers de 
 ```
 Luego: abre nvim (`:Lazy sync` instala plugins), y en tmux `prefix + I` (instala plugins con tpm).
 
+### 📦 `@types/node` en la carpeta padre de tus proyectos (autocompletado de Node)
+
+TypeScript/tsgo busca los tipos **subiendo por el árbol de carpetas**: incluye los `@types` que encuentre en el `node_modules/@types` de **cualquier carpeta superior** al archivo que editas. Aprovechando eso, si instalas `@types/node` **una sola vez en la carpeta que contiene todos tus proyectos**, TODOS heredan el autocompletado de los módulos de Node (`fs`, `path`, `os`…) sin instalarlo proyecto por proyecto.
+
+```bash
+cd ~/Code && npm i @types/node        # ~/Code es el default/ideal
+```
+
+- **No tiene que ser `~/Code`**: hazlo en el **ancestro común** donde vivan tus repos (ej. `~/dev`, `~/proyectos`). Lo ideal es mantener todo bajo una sola carpeta (`~/Code`) para que baste un install.
+- Si trabajas en varias carpetas raíz distintas, repite el `npm i @types/node` en cada una.
+- Solo aplica a **módulos de Node**. Reglas de estilo (ESLint) sí van **por proyecto** (`eslint-init`) — el enfoque "global" no funciona con el LSP.
+
 ## ⚙️ Aliases y comandos propios (en `.zshrc`)
 
 | Comando | Qué hace |
