@@ -33,8 +33,21 @@ for sock in $(find "${TMPDIR:-/tmp}" -maxdepth 3 -name 'nvim.*.0' -type s 2>/dev
     "execute('set background=$NVIM_BG | colorscheme $NVIM_CS')" >/dev/null 2>&1 || true
 done
 
-# 3) WezTerm: cambia color_scheme (fondo del terminal). WezTerm lee ~/.config/theme-mode
-#    al cargar su config; con `touch` forzamos que recargue y aplique el nuevo esquema.
+# 3) tmux: noche = tmux-power · día = barra clara oficial (tokyonight_day)
+HOOK=" #(~/.tmux/plugins/tmux-continuum/scripts/continuum_save.sh)"
+if tmux info >/dev/null 2>&1; then
+  if [ "$MODE" = light ]; then
+    tmux source-file "$HOME/dotfiles/tmux/theme-light.conf"
+  else
+    tmux run-shell "~/.tmux/plugins/tmux-power/tmux-power.tmux"
+    sleep 0.4 # esperar a que tmux-power termine antes de ajustar el resto
+    tmux set -g status-style "bg=#262626,fg=#a8a8a8" # tmux-power no resetea status-style
+    tmux set -ag status-right "$HOOK"                # re-inyectar hook de continuum
+  fi
+fi
+
+# 4) WezTerm: cambia color_scheme (fondo). Lee ~/.config/theme-mode al cargar; el `touch`
+#    fuerza que recargue (WezTerm tarda ~1s; NO usamos señales para no cerrarlo).
 touch "$HOME/dotfiles/wezterm/.wezterm.lua" 2>/dev/null || true
 
-echo "✔ tema: $MODE  (nvim: $NVIM_CS · WezTerm: fondo $MODE)"
+echo "✔ tema: $MODE  (nvim: $NVIM_CS · WezTerm: $MODE · tmux: $([ "$MODE" = light ] && echo 'día' || echo 'tmux-power'))"
