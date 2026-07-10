@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
-# Cambia el tema de Neovim + tmux JUNTOS con un comando.
+# Cambia el tema de Neovim + WezTerm JUNTOS con un comando.
 #   theme            -> alterna entre claro/oscuro
 #   theme 1 | dark   -> oscuro (Tokyo Night)
 #   theme 2 | light  -> claro  (Flexoki)
-# Aplica al instante a los nvim abiertos y a tmux, y persiste para lo que abras después.
+# Aplica al instante a los nvim abiertos y a WezTerm, y persiste para lo que abras después.
+# (tmux mantiene su propia barra tmux-power; no lo toca.)
 set -e
 
 STATE="$HOME/.config/theme-mode"
@@ -32,9 +33,8 @@ for sock in $(find "${TMPDIR:-/tmp}" -maxdepth 3 -name 'nvim.*.0' -type s 2>/dev
     "execute('set background=$NVIM_BG | colorscheme $NVIM_CS')" >/dev/null 2>&1 || true
 done
 
-# 3) tmux: cargar la barra del modo (en vivo, si hay servidor)
-if tmux info >/dev/null 2>&1; then
-  tmux source-file "$HOME/dotfiles/tmux/theme-$MODE.conf"
-fi
+# 3) WezTerm: cambia color_scheme (fondo del terminal). WezTerm lee ~/.config/theme-mode
+#    al cargar su config; con `touch` forzamos que recargue y aplique el nuevo esquema.
+touch "$HOME/dotfiles/wezterm/.wezterm.lua" 2>/dev/null || true
 
-echo "✔ tema: $MODE  (nvim: $NVIM_CS · tmux: barra $MODE)"
+echo "✔ tema: $MODE  (nvim: $NVIM_CS · WezTerm: fondo $MODE)"
