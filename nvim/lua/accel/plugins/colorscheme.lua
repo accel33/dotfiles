@@ -17,8 +17,7 @@ return {
 		name = "rose-pine",
 		priority = 1000,
 	},
-	-- temas claros tipo "papel/crema" para probar (no activos aún):
-	{ "savq/melange-nvim", name = "melange", priority = 1000 },
+	-- temas claros cálidos tipo "papel":
 	{ "kepano/flexoki-neovim", name = "flexoki", priority = 1000 },
-	{ "maxmx03/solarized.nvim", name = "solarized", priority = 1000 },
+	{ "rebelot/kanagawa.nvim", name = "kanagawa", priority = 1000 },
 }
