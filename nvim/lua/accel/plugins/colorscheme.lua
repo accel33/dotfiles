@@ -17,4 +17,6 @@ return {
 		name = "rose-pine",
 		priority = 1000,
 	},
+	-- temas claros tipo "papel/crema" para probar (no activos aún):
+	{ "savq/melange-nvim", name = "melange", priority = 1000 },
 }
