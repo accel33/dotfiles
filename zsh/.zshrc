@@ -24,6 +24,7 @@ alias denos='deno run --allow-env --allow-net'
 # ---- Mis scripts de dotfiles ----
 alias eslint-init="$HOME/dotfiles/docs/setup-eslint.sh" # configura eslint en el proyecto actual
 alias cheatsheet="$HOME/dotfiles/docs/build-pdf.sh"     # regenera el PDF del cheatsheet
+alias theme="$HOME/dotfiles/docs/theme.sh"              # cambia tema nvim+tmux: theme 1|2 (o sin arg alterna)
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm

@@ -4,7 +4,20 @@ return {
 		name = "tokyonight",
 		priority = 1000,
 		config = function()
-			vim.cmd([[colorscheme tokyonight-night]])
+			-- lee el modo guardado por el comando `theme` (~/.config/theme-mode)
+			local mode = "dark"
+			local f = io.open(vim.fn.expand("~/.config/theme-mode"), "r")
+			if f then
+				mode = vim.trim(f:read("*a") or "dark")
+				f:close()
+			end
+			if mode == "light" then
+				vim.o.background = "light"
+				vim.cmd.colorscheme("flexoki-light")
+			else
+				vim.o.background = "dark"
+				vim.cmd.colorscheme("tokyonight-night")
+			end
 		end,
 	},
 	{
