@@ -19,4 +19,5 @@ return {
 	},
 	-- temas claros tipo "papel/crema" para probar (no activos aún):
 	{ "savq/melange-nvim", name = "melange", priority = 1000 },
+	{ "kepano/flexoki-neovim", name = "flexoki", priority = 1000 },
 }
