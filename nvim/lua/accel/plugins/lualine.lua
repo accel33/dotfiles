@@ -3,68 +3,40 @@ return {
   dependencies = { "nvim-tree/nvim-web-devicons" },
   config = function()
     local lualine = require("lualine")
-    local lazy_status = require("lazy.status") -- to configure lazy pending updates count
+    local lazy_status = require("lazy.status") -- pending updates count
 
-    local colors = {
-      blue = "#65D1FF",
-      green = "#3EFFDC",
-      violet = "#FF61EF",
-      yellow = "#FFDA7B",
-      red = "#FF4A4A",
-      fg = "#c3ccdc",
-      bg = "#112638",
-      inactive_bg = "#2c3043",
-    }
+    -- muestra qué LSP está activo en el buffer (ej. "tsgo", "lua_ls")
+    local function lsp_names()
+      local clients = vim.lsp.get_clients({ bufnr = 0 })
+      if #clients == 0 then
+        return ""
+      end
+      local names = {}
+      for _, c in ipairs(clients) do
+        names[#names + 1] = c.name
+      end
+      return " " .. table.concat(names, ", ")
+    end
 
-    local my_lualine_theme = {
-      normal = {
-        a = { bg = colors.blue, fg = colors.bg, gui = "bold" },
-        b = { bg = colors.bg, fg = colors.fg },
-        c = { bg = colors.bg, fg = colors.fg },
-      },
-      insert = {
-        a = { bg = colors.green, fg = colors.bg, gui = "bold" },
-        b = { bg = colors.bg, fg = colors.fg },
-        c = { bg = colors.bg, fg = colors.fg },
-      },
-      visual = {
-        a = { bg = colors.violet, fg = colors.bg, gui = "bold" },
-        b = { bg = colors.bg, fg = colors.fg },
-        c = { bg = colors.bg, fg = colors.fg },
-      },
-      command = {
-        a = { bg = colors.yellow, fg = colors.bg, gui = "bold" },
-        b = { bg = colors.bg, fg = colors.fg },
-        c = { bg = colors.bg, fg = colors.fg },
-      },
-      replace = {
-        a = { bg = colors.red, fg = colors.bg, gui = "bold" },
-        b = { bg = colors.bg, fg = colors.fg },
-        c = { bg = colors.bg, fg = colors.fg },
-      },
-      inactive = {
-        a = { bg = colors.inactive_bg, fg = colors.semilightgray, gui = "bold" },
-        b = { bg = colors.inactive_bg, fg = colors.semilightgray },
-        c = { bg = colors.inactive_bg, fg = colors.semilightgray },
-      },
-    }
-
-    -- configure lualine with modified theme
     lualine.setup({
       options = {
-        theme = my_lualine_theme,
+        -- "auto" hace que la barra siga el colorscheme (tokyonight oscuro / flexoki claro)
+        theme = "auto",
+        globalstatus = true, -- una sola barra abajo aunque haya splits
       },
       sections = {
+        -- lualine_a = modo · lualine_b = rama git + diff · lualine_c = archivo + diagnósticos
         lualine_x = {
           {
             lazy_status.updates,
             cond = lazy_status.has_updates,
             color = { fg = "#ff9e64" },
           },
+          { lsp_names, icon = "" }, -- LSP activo
           { "encoding" },
-          { "fileformat" },
           { "filetype" },
         },
+        -- lualine_y = progreso (%) · lualine_z = línea:columna
       },
     })
   end,
