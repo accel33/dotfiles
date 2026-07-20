@@ -14,6 +14,12 @@ return {
       -- misma info de siempre: modo · rama+diff · archivo+diagnósticos ·
       -- (x) updates de lazy, encoding, fileformat, filetype · progreso · línea:col
       sections = {
+        -- filename con path=1 (ruta RELATIVA): muestra "files/promesas.js" en vez
+        -- de solo "promesas.js" -> distingues archivos con el mismo nombre.
+        -- path: 0=nombre · 1=relativa · 2=absoluta · 3=absoluta(~) · 4=nombre+carpeta
+        lualine_c = {
+          { "filename", path = 1, symbols = { modified = " ●", readonly = " ", newfile = " " } },
+        },
         lualine_x = {
           {
             lazy_status.updates,

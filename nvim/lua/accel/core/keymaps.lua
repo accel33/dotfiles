@@ -46,12 +46,45 @@ keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Split window horizontally" })
 keymap.set("n", "<leader>se", "<C-w>=", { desc = "Make splits equal size" })
 keymap.set("n", "<leader>sx", "<cmd>close<CR>", { desc = "Close current split" })
 
+-- Modo resize INCREMENTAL estilo tmux: <leader>sr y luego tap h/j/k/l (repetible).
+--   h/l = ancho (ideal para nvim-tree) · j/k = alto · cualquier otra tecla sale.
+keymap.set("n", "<leader>sr", function()
+  local step = 3
+  while true do
+    vim.api.nvim_echo({ { "-- RESIZE --  h/l ancho · j/k alto · otra tecla sale", "ModeMsg" } }, false, {})
+    local ok, ch = pcall(vim.fn.getcharstr)
+    if not ok then break end
+    if ch == "h" then
+      vim.cmd("vertical resize -" .. step)
+    elseif ch == "l" then
+      vim.cmd("vertical resize +" .. step)
+    elseif ch == "j" then
+      vim.cmd("resize -" .. step)
+    elseif ch == "k" then
+      vim.cmd("resize +" .. step)
+    else
+      break
+    end
+    vim.cmd("redraw")
+  end
+  vim.api.nvim_echo({ { "", "" } }, false, {})
+end, { desc = "Modo resize (hjkl, estilo tmux)" })
+
 -- tabs
 keymap.set("n", "<leader>to", "<cmd>tabnew<CR>", { desc = "Open new tab" })
 keymap.set("n", "<leader>tx", "<cmd>tabclose<CR>", { desc = "Close tab" })
 keymap.set("n", "<leader>tn", "<cmd>tabn<CR>", { desc = "Next tab" })
 keymap.set("n", "<leader>tp", "<cmd>tabp<CR>", { desc = "Previous tab" })
 keymap.set("n", "<leader>tf", "<cmd>tabnew %<CR>", { desc = "Open buffer in new tab" })
+
+-------------------------
+--  BUFFERS
+-------------------------
+-- alternar entre el buffer actual y el anterior (reemplazo cómodo de Ctrl-^)
+keymap.set("n", "<leader><leader>", "<C-^>", { desc = "Alternar buffer anterior" })
+
+-- ver los buffers con cambios SIN GUARDAR (:ls + filtra a los modificados)
+keymap.set("n", "<leader>bm", "<cmd>ls +<CR>", { desc = "Buffers modificados (sin guardar)" })
 
 -- Terminal: se usa un pane de tmux (Ctrl+j al de abajo), no la terminal interna de nvim.
 

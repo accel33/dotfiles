@@ -19,9 +19,16 @@ return {
         -- See `:help vim.lsp.*` for documentation on any of the below functions
         local opts = { buffer = ev.buf, silent = true }
 
+        -- Neovim 0.11+ define grr/grn/gra/gri/grt por defecto -> 'gr' queda ambiguo
+        -- (which-key muestra el menú y espera el 3er carácter). Los quitamos para que
+        -- 'gr' dispare referencias al instante. (rename/code-action ya los tienes en <leader>.)
+        for _, k in ipairs({ "grr", "grn", "gra", "gri", "grt" }) do
+          pcall(vim.keymap.del, "n", k)
+        end
+
         -- set keybinds
         opts.desc = "Show LSP references"
-        keymap.set("n", "gR", "<cmd>Telescope lsp_references<CR>", opts) -- show definition, references
+        keymap.set("n", "gr", "<cmd>Telescope lsp_references<CR>", opts) -- ir a referencias (directo)
 
         opts.desc = "Go to declaration"
         keymap.set("n", "gD", vim.lsp.buf.declaration, opts) -- go to declaration
@@ -128,9 +135,16 @@ return {
     vim.lsp.config("eslint", {
       root_dir = function(bufnr, on_dir)
         local markers = {
-          ".eslintrc", ".eslintrc.js", ".eslintrc.cjs", ".eslintrc.yaml",
-          ".eslintrc.yml", ".eslintrc.json",
-          "eslint.config.js", "eslint.config.mjs", "eslint.config.cjs", "eslint.config.ts",
+          ".eslintrc",
+          ".eslintrc.js",
+          ".eslintrc.cjs",
+          ".eslintrc.yaml",
+          ".eslintrc.yml",
+          ".eslintrc.json",
+          "eslint.config.js",
+          "eslint.config.mjs",
+          "eslint.config.cjs",
+          "eslint.config.ts",
         }
         local fname = vim.api.nvim_buf_get_name(bufnr)
         local found = vim.fs.find(markers, { upward = true, path = vim.fs.dirname(fname) })[1]

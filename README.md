@@ -22,6 +22,7 @@ Configuración personal de macOS: **Neovim + tmux + WezTerm + zsh**, gestionada 
     ├── setup-eslint.sh     # instala eslint en el proyecto actual
     ├── build-pdf.sh        # regenera el PDF del cheatsheet
     ├── cheatsheet.html     # fuente del cheatsheet (nvim+tmux+terminal)
+    ├── lazygit-cheatsheet.md    # teclas y conceptos de git + lazygit
     └── eslint.config.example.js  # plantilla de eslint (JS/TS)
 ```
 
@@ -33,7 +34,9 @@ cd ~/dotfiles
 brew bundle install --file=Brewfile        # todo el software
 ./install.sh                                # symlinks + ~/.tmux/resurrect
 # extras que no maneja brew:
-npm install -g @typescript/native-preview tree-sitter-cli   # tsgo + parsers de nvim
+npm install -g @typescript/native-preview tree-sitter-cli prettier   # tsgo + parsers de nvim + formatter
+# (con nvm) para que CADA nueva versión de node los traiga sola:
+printf '%s\n' @typescript/native-preview tree-sitter-cli prettier > ~/.nvm/default-packages
 # oh-my-zsh: https://ohmyz.sh · tpm: git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 ```
 Luego: abre nvim (`:Lazy sync` instala plugins), y en tmux `prefix + I` (instala plugins con tpm).
@@ -48,7 +51,7 @@ cd ~/Code && npm i @types/node        # ~/Code es el default/ideal
 
 - **No tiene que ser `~/Code`**: hazlo en el **ancestro común** donde vivan tus repos (ej. `~/dev`, `~/proyectos`). Lo ideal es mantener todo bajo una sola carpeta (`~/Code`) para que baste un install.
 - Si trabajas en varias carpetas raíz distintas, repite el `npm i @types/node` en cada una.
-- Solo aplica a **módulos de Node**. Reglas de estilo (ESLint) sí van **por proyecto** (`eslint-init`) — el enfoque "global" no funciona con el LSP.
+- ⚠️ **ESLint NO se pone en `~/Code`** (aunque `@types/node` sí): una config de eslint en la carpeta padre se cuela en TODOS los proyectos de abajo — incluidos los de trabajo (kambista, k-admin…) — y les mete reglas ajenas o rompe por choque de versiones. ESLint va **por proyecto** (`eslint-init`). Ver gotcha #8.
 
 ## ⚙️ Aliases y comandos propios (en `.zshrc`)
 
@@ -66,7 +69,7 @@ cd ~/Code && npm i @types/node        # ~/Code es el default/ideal
 - **Leader = Espacio.** Estructura en `nvim/lua/accel/` (core: options/keymaps; plugins/*).
 - **TypeScript = `tsgo`** (TypeScript 7 nativo en Go, `@typescript/native-preview`). Toggle a `ts_ls` con `use_tsgo` en `plugins/lsp/lspconfig.lua`. `ts_ls` excluido del auto-enable de mason para no correr dos servidores.
 - **treesitter en rama `main`** (la `master` está EOL para 0.12). **Requiere el CLI `tree-sitter`** (npm) para compilar parsers. Highlight se arranca por buffer con `vim.treesitter.start()` en autocmd FileType.
-- **ESLint**: el LSP solo se activa si el proyecto tiene config (gate en `root_dir`). Config **por proyecto** con `eslint-init` (no global — el global no funciona con editores). `eslint_d` quitado de nvim-lint.
+- **ESLint**: el LSP solo se activa si encuentra config subiendo por el árbol (gate en `root_dir`). Config **por proyecto** con `eslint-init` (config + deps locales). **No usar config global en `~/Code`** — se cuela en los proyectos de trabajo (ver gotcha #8). `eslint_d` quitado de nvim-lint.
 - **Colorschemes**: tokyonight (oscuro, default), **flexoki-light** (claro), kanagawa, catppuccin, rose-pine. El colorscheme lo decide `~/.config/theme-mode` (ver THEME.md).
 - **lualine** `theme="auto"` → sigue el tema (oscuro/claro) automáticamente.
 - **Portapapeles**: `unnamedplus`; solo `y` (yank) va al portapapeles; `d/c/x` van al "black hole"; `<leader>d` = cortar al portapapeles; en visual `p` no pisa el yank.
@@ -96,8 +99,9 @@ cd ~/Code && npm i @types/node        # ~/Code es el default/ideal
 5. **continuum** (auto-guardado) depende de su hook en `status-right` → re-inyectar con `set -ag status-right` tras cambiar la barra; continuum debe cargar DESPUÉS de los temas.
 6. **Glyphs powerline** ` ` = bytes `\xee\x82\xb0` / `\xee\x82\xb2`. Se pierden al escribir/`tmux show` → construir con `printf`/heredoc usando los bytes (ver `tmux/theme-light.conf` y THEME.md).
 7. **treesitter main** necesita el CLI `tree-sitter` para compilar parsers.
-8. **ESLint global en carpeta padre NO funciona** con el LSP/eslint_d → config por proyecto.
+8. **ESLint va POR PROYECTO, nunca global en `~/Code`** (confirmado en vivo 2026-07-11). Una `eslint.config.mjs` en `~/Code` se cuela por el `root_dir` (busca upward) en TODOS los subproyectos, incluidos los de trabajo sin config propia (ej. k-admin). Ahí rompe con `Could not find "no-unassigned-vars" in plugin "@"`: el preset `@eslint/js` v10 referencia una regla nueva que el eslint **bundled del language server (Mason, más viejo)** no tiene. Con config **local** el LSP usa el eslint local (versión que coincide) → sin choque. Regla: config + `node_modules` dentro del proyecto (`eslint-init`).
 9. **El teal de flexoki que combina con lualine es `#24837b`** (no el olivo `#66800b`).
+10. **prettier (conform) es por-versión-de-node con nvm.** `npm i -g prettier` solo lo instala en la versión ACTIVA (`nvm current`). Si lanzas nvim desde otra versión, conform no lo halla → cae al LSP, que **no agrega `;`** → riesgo de bug ASI (ej. `require("x")` pegado a `(async...)`). Fix: prettier vive en `~/.nvm/versions/node/<ver>/bin`; ya está en `~/.nvm/default-packages` para que toda nueva versión lo traiga. Nota: prettier NO repara un `;` faltante ya escrito (respeta el AST parseado); protege porque el format-on-save lo agrega mientras escribes, antes de que se forme la ambigüedad.
 
 ## 📌 Pendientes / notas
 

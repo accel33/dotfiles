@@ -32,6 +32,7 @@ return {
         "lua_ls",
         "cmake",
         "eslint",
+        "jdtls", -- Java (Eclipse JDT). OJO: jdtls necesita un JDK 21+ para arrancar.
       },
       -- v2 auto-arranca con vim.lsp.enable() todo paquete instalado que tenga
       -- config LSP. stylua es un FORMATTER (lo maneja conform), pero nvim-lspconfig

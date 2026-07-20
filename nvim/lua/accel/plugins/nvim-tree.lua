@@ -47,6 +47,8 @@ return {
       },
       renderer = {
         indent_markers = { enable = true },
+        -- resalta el nombre del archivo abierto en el árbol (como VSCode)
+        highlight_opened_files = "name",
         icons = {
           glyphs = {
             folder = {
@@ -57,6 +59,8 @@ return {
         },
       },
       sync_root_with_cwd = true,
+      -- sigue y RESALTA el archivo actual en el árbol (como VSCode).
+      update_focused_file = { enable = true },
       actions = {
         open_file = { window_picker = { enable = false } },
       },

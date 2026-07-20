@@ -115,6 +115,7 @@
     <tr><td class="key"><kbd class="sp">␣</kbd><kbd>se</kbd></td><td class="desc"><b>Igualar</b> el tamaño de los splits</td></tr>
     <tr><td class="key"><kbd class="sp">␣</kbd><kbd>sx</kbd></td><td class="desc"><b>Cerrar</b> el split actual</td></tr>
     <tr><td class="key"><kbd class="sp">␣</kbd><kbd>sm</kbd></td><td class="desc"><b>Maximizar / restaurar</b> el split (foco temporal)</td></tr>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>sr</kbd></td><td class="desc"><b>Modo resize incremental</b>: luego tap <kbd>h/l</kbd> (ancho) o <kbd>j/k</kbd> (alto), repetible; otra tecla sale<span class="d">Ideal para agrandar nvim-tree: ␣sr y tap l l l</span></td></tr>
     <tr><td class="key"><kbd>⌃h</kbd><kbd>⌃j</kbd><kbd>⌃k</kbd><kbd>⌃l</kbd></td><td class="desc"><b>Moverte entre splits</b> (y entre panes de tmux)<span class="d">Mismas teclas funcionan en vim y en tmux gracias a vim-tmux-navigator</span></td></tr>
   </table>
 </div>
@@ -126,6 +127,8 @@
     <tr><td class="key"><kbd class="sp">␣</kbd><kbd>tx</kbd></td><td class="desc"><b>Cerrar</b> pestaña</td></tr>
     <tr><td class="key"><kbd class="sp">␣</kbd><kbd>tn</kbd> / <kbd class="sp">␣</kbd><kbd>tp</kbd></td><td class="desc"><b>Siguiente / anterior</b> pestaña</td></tr>
     <tr><td class="key"><kbd class="sp">␣</kbd><kbd>tf</kbd></td><td class="desc"><b>Abrir el buffer actual</b> en una pestaña nueva</td></tr>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd class="sp">␣</kbd></td><td class="desc"><b>Alternar</b> entre el buffer actual y el anterior<span class="d">La barra de arriba (bufferline) muestra un tab por archivo abierto</span></td></tr>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>bm</kbd></td><td class="desc"><b>Buffers sin guardar</b> (:ls +) &nbsp;·&nbsp; <kbd>:ls</kbd> = todos<span class="d">El + en la lista marca los modificados. Salta con :b N</span></td></tr>
     <tr><td class="key"><span class="muted">terminal</span></td><td class="desc">Para una terminal usa un <b>pane de tmux</b> (Ctrl+j al de abajo), no una terminal interna de nvim</td></tr>
   </table>
 </div>
@@ -160,10 +163,12 @@
   <table>
     <tr><td class="key"><kbd class="sp">␣</kbd><kbd>ff</kbd></td><td class="desc"><b>Buscar archivos</b> por nombre en el proyecto<span class="d">Escribe parte del nombre; es difuso (no necesita ser exacto)</span></td></tr>
     <tr><td class="key"><kbd class="sp">␣</kbd><kbd>fr</kbd></td><td class="desc"><b>Archivos recientes</b> (los que abriste últimamente)</td></tr>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>fb</kbd></td><td class="desc"><b>Buffers abiertos</b> (lista difusa de lo que tienes abierto)</td></tr>
     <tr><td class="key"><kbd class="sp">␣</kbd><kbd>fs</kbd></td><td class="desc"><b>Buscar texto</b> dentro de todos los archivos (live grep)<span class="d">Busca una palabra/frase en TODO el proyecto en tiempo real</span></td></tr>
     <tr><td class="key"><kbd class="sp">␣</kbd><kbd>fc</kbd></td><td class="desc"><b>Buscar la palabra bajo el cursor</b> en el proyecto</td></tr>
     <tr><td class="key"><kbd class="sp">␣</kbd><kbd>fa</kbd></td><td class="desc"><b>Búsqueda amplificada</b> solo en los archivos abiertos</td></tr>
-    <tr><td class="key"><kbd>⌃j</kbd> <kbd>⌃k</kbd> &nbsp; <kbd>⌃q</kbd></td><td class="desc">Dentro del buscador: <b>bajar / subir</b> · enviar resultados a <b>quickfix</b></td></tr>
+    <tr><td class="key"><kbd>⌃j</kbd> <kbd>⌃k</kbd> &nbsp; <kbd>⏎</kbd></td><td class="desc">Dentro del buscador: <b>bajar / subir</b> (navegar) · <b>abrir</b> el resaltado<span class="d">⌃j/⌃k navegan (NO uses Tab para eso)</span></td></tr>
+    <tr><td class="key"><kbd>Tab</kbd> &nbsp; <kbd>⌃q</kbd></td><td class="desc"><b>Marcar</b> varios (multi-selección, sale un +) → <kbd>⌃q</kbd> los manda al <b>quickfix</b><span class="d">Para refactors: marca los usos y recórrelos con ␣xq / :cnext</span></td></tr>
   </table>
 </div>
 
@@ -171,7 +176,7 @@
   <b>🧭 LSP: ¿cuál uso? (definición vs declaración vs referencias…)</b>
   <div class="row"><span class="t">Definición (gd):</span> te lleva a donde algo está <b>escrito/implementado de verdad</b>. Ej: sobre <code>miFuncion()</code> → salta al cuerpo de esa función. <b>Es el que más usarás.</b></div>
   <div class="row"><span class="t">Declaración (gD):</span> dónde se <b>declara</b> (se anuncia que existe) sin necesariamente implementarlo. En JS/TS suele coincidir con la definición; se nota más en C/C++ (te lleva al <code>.h</code>).</div>
-  <div class="row"><span class="t">Referencias (gR):</span> <b>todos los lugares donde se usa</b> ese símbolo en el proyecto. Ideal para "¿qué se rompe si cambio esto?".</div>
+  <div class="row"><span class="t">Referencias (gr):</span> <b>todos los lugares donde se usa</b> ese símbolo en el proyecto. Ideal para "¿qué se rompe si cambio esto?".</div>
   <div class="row"><span class="t">Implementaciones (gi):</span> para <b>interfaces / clases abstractas</b>: dónde se implementan concretamente. Ej: una interfaz <code>Repository</code> → sus clases que la cumplen.</div>
   <div class="row"><span class="t">Definición de tipo (gt):</span> te lleva a la <b>definición del tipo</b> de una variable. Ej: sobre <code>const u: User</code> → salta a <code>interface User</code>.</div>
   <div class="row"><span class="t">Hover (K):</span> muestra <b>documentación y tipo</b> en un popup, sin moverte del lugar.</div>
@@ -183,7 +188,7 @@
   <table>
     <tr><td class="key"><kbd>gd</kbd></td><td class="desc"><b>Ir a la definición</b> (dónde se implementa)</td></tr>
     <tr><td class="key"><kbd>gD</kbd></td><td class="desc"><b>Ir a la declaración</b></td></tr>
-    <tr><td class="key"><kbd>gR</kbd></td><td class="desc"><b>Ver referencias</b> (todos los usos)</td></tr>
+    <tr><td class="key"><kbd>gr</kbd></td><td class="desc"><b>Ver referencias</b> (todos los usos) — dispara directo<span class="d">Se quitaron los defaults grr/grn/gra/gri/grt de nvim 0.11 que hacían esperar el menú</span></td></tr>
     <tr><td class="key"><kbd>gi</kbd></td><td class="desc"><b>Ver implementaciones</b> (de una interfaz)</td></tr>
     <tr><td class="key"><kbd>gt</kbd></td><td class="desc"><b>Ir a la definición del tipo</b></td></tr>
     <tr><td class="key"><kbd>K</kbd></td><td class="desc"><b>Documentación / tipo</b> en popup (hover, con borde)</td></tr>
@@ -300,9 +305,9 @@ Abajo lo escribo como <kbd class="sp">⌃a</kbd> <kbd>tecla</kbd>.</div>
   <h2>Windows (pestañas)</h2>
   <table>
     <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>c</kbd></td><td class="desc"><b>Crear</b> window &nbsp; <span class="muted">(c = create)</span></td></tr>
-    <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>,</kbd></td><td class="desc"><b>Renombrar</b> la window (ponles nombre: editor, server…)</td></tr>
+    <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>r</kbd></td><td class="desc"><b>Renombrar</b> la window (pre-rellena el nombre actual) &nbsp;<span class="muted">(, también sirve)</span></td></tr>
     <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>1</kbd>…<kbd>9</kbd></td><td class="desc"><b>Ir</b> a la window N &nbsp;<span class="muted">(las tuyas empiezan en 1)</span></td></tr>
-    <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>n</kbd> / <kbd>p</kbd></td><td class="desc"><b>Siguiente / anterior</b> window</td></tr>
+    <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>h</kbd> / <kbd>l</kbd></td><td class="desc"><b>Anterior / siguiente</b> window (minúscula = window). Repetible<span class="d">n / p por defecto también funcionan</span></td></tr>
     <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>w</kbd></td><td class="desc"><b>Árbol</b> de windows de todas las sesiones</td></tr>
     <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>&amp;</kbd></td><td class="desc"><b>Cerrar</b> la window (pide confirmación)</td></tr>
     <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>f</kbd></td><td class="desc"><b>Buscar</b> window por texto</td></tr>
@@ -316,7 +321,7 @@ Abajo lo escribo como <kbd class="sp">⌃a</kbd> <kbd>tecla</kbd>.</div>
     <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>-</kbd></td><td class="desc"><b>Split horizontal</b> (arriba / abajo)</td></tr>
     <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>x</kbd></td><td class="desc"><b>Cerrar</b> el pane (sin confirmación)</td></tr>
     <tr><td class="key"><kbd>⌃h</kbd> <kbd>⌃j</kbd> <kbd>⌃k</kbd> <kbd>⌃l</kbd></td><td class="desc"><b>Moverte entre panes</b> — SIN prefix<span class="d">Las mismas teclas saltan también a los splits de Neovim</span></td></tr>
-    <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>h/j/k/l</kbd></td><td class="desc"><b>Redimensionar</b> el pane (se puede repetir sin re-prefix)</td></tr>
+    <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>H/L</kbd> <kbd>j/k</kbd></td><td class="desc"><b>Redimensionar</b> el pane: H/L (izq/der, MAYÚSCULA) · j/k (abajo/arriba). Repetible<span class="d">Regla: MAYÚSCULA = resize pane · minúscula h/l = cambiar window</span></td></tr>
     <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>m</kbd></td><td class="desc"><b>Zoom</b>: el pane a pantalla completa; repite para volver<span class="d">Úsalo mucho para enfocarte en un pane</span></td></tr>
     <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>q</kbd></td><td class="desc"><b>Mostrar números</b> de pane → presiona el número para saltar</td></tr>
     <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>Space</kbd></td><td class="desc"><b>Rotar layouts</b> predefinidos</td></tr>
@@ -328,7 +333,7 @@ Abajo lo escribo como <kbd class="sp">⌃a</kbd> <kbd>tecla</kbd>.</div>
 <div class="card clip">
   <h2>Copy mode (scroll y copiar) <span class="why">estilo vim</span></h2>
   <table>
-    <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>[</kbd></td><td class="desc"><b>Entrar</b> a copy mode (o solo scrollea con el mouse)</td></tr>
+    <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>C</kbd></td><td class="desc"><b>Entrar</b> a copy mode &nbsp;<span class="muted">([ también sirve)</span> · o solo scrollea con el mouse</td></tr>
     <tr><td class="key"><kbd>h j k l</kbd> <kbd>/</kbd> <kbd>gg</kbd> <kbd>G</kbd></td><td class="desc"><b>Moverte</b> como en vim (buscar con /, inicio gg, fin G)</td></tr>
     <tr><td class="key"><kbd>v</kbd> → mover → <kbd>y</kbd></td><td class="desc"><b>Seleccionar y copiar</b> al portapapeles de macOS<span class="d">Con y te quedas en copy mode; luego pegas con Cmd+V donde sea</span></td></tr>
     <tr><td class="key">🖱️ arrastrar</td><td class="desc"><b>Seleccionar con mouse</b> → al soltar, copia al portapapeles y sale</td></tr>
@@ -339,7 +344,7 @@ Abajo lo escribo como <kbd class="sp">⌃a</kbd> <kbd>tecla</kbd>.</div>
 <div class="card fmt">
   <h2>Config, plugins y ayuda</h2>
   <table>
-    <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>r</kbd></td><td class="desc"><b>Recargar</b> la config (verás "✔️ tmux config reloaded")</td></tr>
+    <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>R</kbd></td><td class="desc"><b>Recargar</b> la config (MAYÚSCULA; r pasó a renombrar window)</td></tr>
     <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>I</kbd></td><td class="desc"><b>Instalar</b> plugins nuevos (tpm) &nbsp;<span class="muted">(I mayúscula)</span></td></tr>
     <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>U</kbd></td><td class="desc"><b>Actualizar</b> plugins</td></tr>
     <tr><td class="key"><kbd class="sp">⌃a</kbd> <kbd>?</kbd></td><td class="desc"><b>Ver TODOS</b> los atajos activos</td></tr>
