@@ -1,0 +1,86 @@
+# Tokyo Night — dark de k9s (combina con tu nvim/wezterm/tmux oscuro).
+# Base en capas para dar profundidad (no negro plano):
+#   body #1a1b26 · paneles #1f2335 · selección #33467c · bordes #414868
+#   fg #c0caf5 · dim #565f89 · blue #7aa2f7 · purple #bb9af7 · cyan #7dcfff
+#   green #9ece6a · orange #ff9e64 · red #f7768e · yellow #e0af68
+k9s:
+  body:
+    fgColor: "#c0caf5"
+    bgColor: "#1a1b26"
+    logoColor: "#7aa2f7"
+    logoColorMsg: "#c0caf5"
+  prompt:
+    fgColor: "#c0caf5"
+    bgColor: "#1f2335"
+    suggestColor: "#bb9af7"
+  info:
+    fgColor: "#7aa2f7"
+    sectionColor: "#c0caf5"
+  dialog:
+    fgColor: "#c0caf5"
+    bgColor: "#1a1b26"
+    buttonFgColor: "#c0caf5"
+    buttonBgColor: "#7aa2f7"
+    buttonFocusFgColor: "#1a1b26"
+    buttonFocusBgColor: "#bb9af7"
+    labelFgColor: "#ff9e64"
+    fieldFgColor: "#c0caf5"
+  frame:
+    border:
+      fgColor: "#414868"
+      focusColor: "#7aa2f7"
+    menu:
+      fgColor: "#c0caf5"
+      keyColor: "#bb9af7"
+      numKeyColor: "#bb9af7"
+    crumbs:
+      fgColor: "#1a1b26"
+      bgColor: "#7aa2f7"
+      activeColor: "#bb9af7"
+    status:
+      newColor: "#7dcfff"
+      modifyColor: "#7aa2f7"
+      addColor: "#9ece6a"
+      errorColor: "#f7768e"
+      highlightColor: "#ff9e64"
+      killColor: "#565f89"
+      completedColor: "#565f89"
+    title:
+      fgColor: "#c0caf5"
+      bgColor: "#1f2335"
+      highlightColor: "#ff9e64"
+      counterColor: "#bb9af7"
+      filterColor: "#7dcfff"
+  views:
+    charts:
+      bgColor: "#1a1b26"
+      defaultDialColors: ["#7aa2f7", "#f7768e"]
+      defaultChartColors: ["#7aa2f7", "#f7768e"]
+    table:
+      fgColor: "#c0caf5"
+      bgColor: "#1a1b26"
+      cursorFgColor: "#1a1b26"
+      cursorBgColor: "#33467c"
+      markColor: "#ff9e64"
+      header:
+        fgColor: "#7aa2f7"
+        bgColor: "#1a1b26"
+        sorterColor: "#7dcfff"
+    xray:
+      fgColor: "#c0caf5"
+      bgColor: "#1a1b26"
+      cursorColor: "#33467c"
+      cursorTextColor: "#c0caf5"
+      graphicColor: "#bb9af7"
+    yaml:
+      keyColor: "#7aa2f7"
+      colonColor: "#565f89"
+      valueColor: "#c0caf5"
+    logs:
+      fgColor: "#c0caf5"
+      bgColor: "#1a1b26"
+      indicator:
+        fgColor: "#c0caf5"
+        bgColor: "#1f2335"
+        toggleOnColor: "#9ece6a"
+        toggleOffColor: "#565f89"

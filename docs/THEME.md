@@ -14,13 +14,14 @@ Todo gira alrededor de **`~/.config/theme-mode`**, un archivo con una palabra: `
 - El comando **escribe** ese archivo.
 - Neovim, WezTerm y tmux lo **leen al arrancar** (persistencia) y el comando además los actualiza **en vivo**.
 
-El script es **`docs/theme.sh`** (alias `theme`). Hace 4 cosas:
+El script es **`docs/theme.sh`** (alias `theme`). Hace 5 cosas:
 
 ```
 1. Escribe dark|light en ~/.config/theme-mode
 2. nvim  → a los nvim ABIERTOS vía sockets:  nvim --server <sock> --remote-expr "execute('set background=.. | colorscheme ..')"
 3. tmux  → light: source theme-light.conf   |   dark: re-aplica tmux-power + fuerza status-style oscuro
 4. WezTerm → touch ~/.wezterm.lua  (dispara recarga; ~1s)   ⚠️ NUNCA SIGUSR1 (cierra WezTerm)
+5. k9s   → copia k9s/skins/<modo>.yaml al skin ACTIVO (theme.yaml); k9s recarga en vivo
 ```
 
 - **Oscuro** = nvim `tokyonight-night` · WezTerm Tokyo Night · tmux **tmux-power**
@@ -81,6 +82,13 @@ El **`sleep 1`** es clave: tmux-power carga **async** vía tpm; sin el delay, tm
 El layout imita a tmux-power: izquierda `usuario@host` (teal) → `sesión` (gris); ventanas con flechas; derecha `hora` (gris) → `fecha` (teal); todo con flechas ` `.
 
 ---
+
+## 4. k9s
+
+- **Skins** en `dotfiles/k9s/skins/`: `dark.yaml` (Tokyo Night) y `light.yaml` (Flexoki).
+- ⚠️ **k9s NO sigue symlinks** para skins → hay que **copiar el archivo real** (por eso no van con `install.sh` link normal; se copian).
+- El `config.yaml` de k9s usa **`ui.skin: theme`** (nombre fijo). El comando `theme` **sobrescribe** `~/Library/Application Support/k9s/skins/theme.yaml` con el dark o light. k9s **vigila ese archivo y recarga el skin en vivo** al cambiarlo (si k9s está abierto lo aplica; si no, en el próximo arranque).
+- Cambiar `ui.skin` a OTRO nombre sí requiere reiniciar k9s; por eso usamos siempre `theme` y solo cambiamos su **contenido**.
 
 ## 🔧 Cómo cambiar / afinar
 

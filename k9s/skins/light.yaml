@@ -1,0 +1,83 @@
+# PRUEBA — skin claro (Flexoki light). Archivo REAL (no symlink) para descartar
+# que k9s no siga symlinks. Si al reiniciar k9s se ve CLARO, los skins SÍ cargan.
+k9s:
+  body:
+    fgColor: "#100f0f"
+    bgColor: "#fffcf0"
+    logoColor: "#24837b"
+    logoColorMsg: "#100f0f"
+  prompt:
+    fgColor: "#100f0f"
+    bgColor: "#e6e4d9"
+    suggestColor: "#af3029"
+  info:
+    fgColor: "#24837b"
+    sectionColor: "#100f0f"
+  dialog:
+    fgColor: "#100f0f"
+    bgColor: "#fffcf0"
+    buttonFgColor: "#fffcf0"
+    buttonBgColor: "#24837b"
+    buttonFocusFgColor: "#fffcf0"
+    buttonFocusBgColor: "#af3029"
+    labelFgColor: "#bc5215"
+    fieldFgColor: "#100f0f"
+  frame:
+    border:
+      fgColor: "#cecdc3"
+      focusColor: "#24837b"
+    menu:
+      fgColor: "#100f0f"
+      keyColor: "#af3029"
+      numKeyColor: "#af3029"
+    crumbs:
+      fgColor: "#fffcf0"
+      bgColor: "#24837b"
+      activeColor: "#af3029"
+    status:
+      newColor: "#205ea6"
+      modifyColor: "#24837b"
+      addColor: "#66800b"
+      errorColor: "#af3029"
+      highlightColor: "#bc5215"
+      killColor: "#6f6e69"
+      completedColor: "#6f6e69"
+    title:
+      fgColor: "#100f0f"
+      bgColor: "#e6e4d9"
+      highlightColor: "#bc5215"
+      counterColor: "#24837b"
+      filterColor: "#205ea6"
+  views:
+    charts:
+      bgColor: "#fffcf0"
+      defaultDialColors: ["#24837b", "#af3029"]
+      defaultChartColors: ["#24837b", "#af3029"]
+    table:
+      fgColor: "#100f0f"
+      bgColor: "#fffcf0"
+      cursorFgColor: "#100f0f"
+      cursorBgColor: "#dad8ce"
+      markColor: "#bc5215"
+      header:
+        fgColor: "#24837b"
+        bgColor: "#fffcf0"
+        sorterColor: "#205ea6"
+    xray:
+      fgColor: "#100f0f"
+      bgColor: "#fffcf0"
+      cursorColor: "#dad8ce"
+      cursorTextColor: "#100f0f"
+      graphicColor: "#24837b"
+    yaml:
+      keyColor: "#af3029"
+      colonColor: "#6f6e69"
+      valueColor: "#100f0f"
+    logs:
+      fgColor: "#100f0f"
+      bgColor: "#fffcf0"
+      indicator:
+        fgColor: "#100f0f"
+        bgColor: "#e6e4d9"
+        toggleOnColor: "#66800b"
+        toggleOffColor: "#6f6e69"

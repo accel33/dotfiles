@@ -50,4 +50,12 @@ fi
 #    fuerza que recargue (WezTerm tarda ~1s; NO usamos señales para no cerrarlo).
 touch "$HOME/dotfiles/wezterm/.wezterm.lua" 2>/dev/null || true
 
-echo "✔ tema: $MODE  (nvim: $NVIM_CS · WezTerm: $MODE · tmux: $([ "$MODE" = light ] && echo 'día' || echo 'tmux-power'))"
+# 5) k9s: sobrescribe el skin ACTIVO (theme.yaml) con el dark/light. config.yaml usa
+#    ui.skin: theme; k9s vigila ese archivo y recarga el skin en vivo al cambiarlo.
+#    (OJO: k9s NO sigue symlinks para skins -> hay que COPIAR el archivo real.)
+K9S_SKINS="$HOME/Library/Application Support/k9s/skins"
+if [ -d "$K9S_SKINS" ]; then
+  cp -f "$HOME/dotfiles/k9s/skins/$MODE.yaml" "$K9S_SKINS/theme.yaml" 2>/dev/null || true
+fi
+
+echo "✔ tema: $MODE  (nvim: $NVIM_CS · WezTerm: $MODE · tmux: $([ "$MODE" = light ] && echo 'día' || echo 'tmux-power') · k9s: $MODE)"

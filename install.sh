@@ -30,5 +30,14 @@ link "$DF/git/ignore"             "$HOME/.config/git/ignore"
 mkdir -p "$HOME/.tmux/resurrect"
 echo "creado: ~/.tmux/resurrect (para tmux-resurrect/continuum)"
 
+# k9s: los skins NO pueden ser symlinks (k9s no los sigue) -> se COPIA el skin activo.
+# El comando `theme` sobrescribe theme.yaml con dark/light; aquí sembramos el inicial.
+K9S_SKINS="$HOME/Library/Application Support/k9s/skins"
+mkdir -p "$K9S_SKINS"
+K9S_MODE="$(cat "$HOME/.config/theme-mode" 2>/dev/null || echo dark)"
+cp -f "$DF/k9s/skins/$K9S_MODE.yaml" "$K9S_SKINS/theme.yaml"
+echo "copiado: skin de k9s ($K9S_MODE) -> theme.yaml"
+echo "nota k9s: pon 'skin: theme' bajo k9s.ui en config.yaml para activarlo"
+
 echo ""
 echo "Listo. Reinicia tu shell (exec zsh) para aplicar."

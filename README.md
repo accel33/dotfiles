@@ -17,6 +17,7 @@ Configuración personal de macOS: **Neovim + tmux + WezTerm + zsh**, gestionada 
 ├── tmux/                   # .tmux.conf + theme-light.conf  → ~
 ├── wezterm/                # .wezterm.lua  → ~
 ├── git/                    # .gitconfig + ignore global
+├── k9s/                    # skins de k9s (dark/light) → se COPIAN a ~/Library/…/k9s/skins (k9s no sigue symlinks)
 └── docs/                   # scripts y plantillas (ver abajo)
     ├── theme.sh            # comando `theme` (día/noche: nvim+wezterm+tmux)
     ├── setup-eslint.sh     # instala eslint en el proyecto actual
@@ -57,7 +58,7 @@ cd ~/Code && npm i @types/node        # ~/Code es el default/ideal
 
 | Comando | Qué hace |
 |---|---|
-| `theme 1` / `theme 2` / `theme` | **Día/noche**: cambia nvim + WezTerm + tmux juntos (1=oscuro, 2=claro, sin arg alterna). Ver [`docs/THEME.md`](docs/THEME.md) |
+| `theme 1` / `theme 2` / `theme` | **Día/noche**: cambia nvim + WezTerm + tmux + k9s juntos (1=oscuro, 2=claro, sin arg alterna). Ver [`docs/THEME.md`](docs/THEME.md) |
 | `eslint-init` | Instala eslint en el proyecto actual (copia plantilla + deps) |
 | `cheatsheet` | Regenera `~/Desktop/nvim_tmux_cheatsheet.pdf` desde `docs/cheatsheet.html` |
 | `vim` | → `nvim` · `denos` → deno con permisos env/net |
