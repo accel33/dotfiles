@@ -78,5 +78,12 @@ esac
 # Added by Antigravity
 export PATH="/Users/accelmaeshiro/.antigravity/antigravity/bin:$PATH"
 
+# ---- Java (JDK 21 LTS de brew, keg-only) ----
+# Para compilar/correr desde la terminal (javac/java, :make, :!java %).
+# Neovim/jdtls NO depende de esto (usa su ruta absoluta en ftplugin/java.lua),
+# pero así `java`/`javac` en la shell son la 21 y no la vieja Zulu 13 del sistema.
+export JAVA_HOME="/opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home"
+export PATH="$JAVA_HOME/bin:$PATH"
+
 # ---- Zoxide init (debe quedarse al FINAL del archivo) ----
 eval "$(zoxide init zsh)"

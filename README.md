@@ -24,6 +24,7 @@ Configuración personal de macOS: **Neovim + tmux + WezTerm + zsh**, gestionada 
     ├── build-pdf.sh        # regenera el PDF del cheatsheet
     ├── cheatsheet.html     # fuente del cheatsheet (nvim+tmux+terminal)
     ├── lazygit-cheatsheet.md    # teclas y conceptos de git + lazygit
+    ├── sesion-2026-07-20.md     # handoff de sesión (k9s, tmux, LSP, buffers, repos)
     └── eslint.config.example.js  # plantilla de eslint (JS/TS)
 ```
 
@@ -103,6 +104,13 @@ cd ~/Code && npm i @types/node        # ~/Code es el default/ideal
 8. **ESLint va POR PROYECTO, nunca global en `~/Code`** (confirmado en vivo 2026-07-11). Una `eslint.config.mjs` en `~/Code` se cuela por el `root_dir` (busca upward) en TODOS los subproyectos, incluidos los de trabajo sin config propia (ej. k-admin). Ahí rompe con `Could not find "no-unassigned-vars" in plugin "@"`: el preset `@eslint/js` v10 referencia una regla nueva que el eslint **bundled del language server (Mason, más viejo)** no tiene. Con config **local** el LSP usa el eslint local (versión que coincide) → sin choque. Regla: config + `node_modules` dentro del proyecto (`eslint-init`).
 9. **El teal de flexoki que combina con lualine es `#24837b`** (no el olivo `#66800b`).
 10. **prettier (conform) es por-versión-de-node con nvm.** `npm i -g prettier` solo lo instala en la versión ACTIVA (`nvm current`). Si lanzas nvim desde otra versión, conform no lo halla → cae al LSP, que **no agrega `;`** → riesgo de bug ASI (ej. `require("x")` pegado a `(async...)`). Fix: prettier vive en `~/.nvm/versions/node/<ver>/bin`; ya está en `~/.nvm/default-packages` para que toda nueva versión lo traiga. Nota: prettier NO repara un `;` faltante ya escrito (respeta el AST parseado); protege porque el format-on-save lo agrega mientras escribes, antes de que se forme la ambigüedad.
+11. **El parser treesitter de `tmux` lo dropeó nvim-treesitter (rama main).** Se
+    re-registra a mano en `treesitter.lua` (grammar `Freed-Wu/tree-sitter-tmux` fija +
+    `generate=true`) vía el autocmd `User TSUpdate` que dispara su `reload_parsers()`
+    (una mutación directa no sobrevive a esa recarga). Las queries van versionadas en
+    `nvim/queries/tmux/`. Resultado: sin warning y el parser se recompila solo en una
+    máquina nueva. Verificado (build limpio + resaltado). Mismo patrón sirve para
+    cualquier otro parser que dropeen en el futuro.
 
 ## 📌 Pendientes / notas
 

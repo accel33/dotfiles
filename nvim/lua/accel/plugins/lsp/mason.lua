@@ -41,7 +41,9 @@ return {
       automatic_enable = {
         -- ts_ls lo habilitamos manualmente en lspconfig.lua (elegimos tsgo o ts_ls,
         -- nunca los dos a la vez).
-        exclude = { "stylua", "stylua3p_ls", "ts_ls" },
+        -- jdtls NO se arranca como LSP normal: lo maneja nvim-jdtls por-buffer
+        -- (ver ftplugin/java.lua). Si mason lo auto-arranca, choca con nvim-jdtls.
+        exclude = { "stylua", "stylua3p_ls", "ts_ls", "jdtls" },
       },
     })
 
@@ -50,6 +52,10 @@ return {
         "prettier", -- prettier formatter
         "stylua", -- lua formatter
         "eslint_d",
+        -- Java (usados por ftplugin/java.lua de forma condicional):
+        "java-debug-adapter", -- DAP para depurar Java (nvim-dap)
+        "java-test", -- correr/depurar tests JUnit desde nvim-jdtls
+        "google-java-format", -- formateo de Java (conform)
       },
     })
   end,
