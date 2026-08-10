@@ -1,14 +1,19 @@
 tap "hashicorp/tap"
-tap "jesseduffield/lazygit"
 tap "samtay/tui"
+# Resource monitor (htop moderno con gráficas)
+brew "btop"
 # Secure runtime for JavaScript and TypeScript
 brew "deno"
 # Modern, maintained replacement for ls
 brew "eza"
+# Buscador de archivos rápido — REQUERIDO por telescope (find_command en telescope.lua)
+brew "fd"
 # GitHub command-line tool
 brew "gh"
 # Open-source build automation tool based on the Groovy and Kotlin DSL
 brew "gradle"
+# Interactive process viewer
+brew "htop"
 # Lightweight and flexible command-line JSON processor
 brew "jq"
 # Kubernetes CLI To Manage Your Clusters In Style!
@@ -21,12 +26,16 @@ brew "lazygit"
 brew "tree-sitter"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
+# JDK 21 LTS (keg-only) — REQUERIDO para jdtls (Java en nvim); ver docs/JAVA.md
+brew "openjdk@21"
 # Theme for zsh
 brew "powerlevel10k"
 # Interpreted, interactive, object-oriented programming language
 brew "python@3.10"
 # Search tool like grep and The Silver Searcher
 brew "ripgrep"
+# Kubernetes: build/deploy iterativo local
+brew "skaffold"
 # Official tldr client written in Rust
 brew "tlrc"
 # Terminal multiplexer
@@ -45,7 +54,14 @@ brew "zoxide"
 brew "zsh-autosuggestions"
 # Fish shell like syntax highlighting for zsh
 brew "zsh-syntax-highlighting"
+# Infra as code (del tap de hashicorp)
+brew "hashicorp/tap/terraform"
+# Tetris en la terminal (del tap de samtay)
+brew "samtay/tui/tetris"
 cask "font-meslo-lg-nerd-font"
+# REQUERIDO por docs/build-pdf.sh (el cheatsheet se imprime con Chrome headless).
+# adopt: si Chrome ya existe (instalado a mano), brew lo adopta en vez de fallar.
+cask "google-chrome", args: { adopt: true }
 # Set of tools to manage resources and applications hosted on Google Cloud
 cask "gcloud-cli"
 # Display key code, unicode value and modifier keys state for any key combination
@@ -75,4 +91,7 @@ vscode "yoavbls.pretty-ts-errors"
 npm "@anthropic-ai/claude-code"
 npm "@typescript/native-preview"
 npm "corepack"
+# prettier: conform (nvim) lo busca en el PATH; además debe estar en
+# ~/.nvm/default-packages para que cada versión nueva de node lo traiga (gotcha #10)
+npm "prettier"
 npm "tree-sitter-cli"
