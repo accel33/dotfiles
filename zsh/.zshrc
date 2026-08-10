@@ -16,7 +16,7 @@ plugins=(git)
 source $ZSH/oh-my-zsh.sh
 
 # Example aliases
-alias zshconfig="mate ~/.zshrc"
+alias zshconfig="nvim ~/.zshrc"
 alias vim="nvim"
 alias denos='deno run --allow-env --allow-net'
 # alias ohmyzsh="mate ~/.oh-my-zsh"

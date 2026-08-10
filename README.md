@@ -101,7 +101,7 @@ cd ~/Code && npm i @types/node        # ~/Code es el default/ideal
 - **Leader = Espacio.** Estructura en `nvim/lua/accel/` (core: options/keymaps; plugins/*).
 - **TypeScript = `tsgo`** (TypeScript 7 nativo en Go, `@typescript/native-preview`). Toggle a `ts_ls` con `use_tsgo` en `plugins/lsp/lspconfig.lua`. `ts_ls` excluido del auto-enable de mason para no correr dos servidores.
 - **treesitter en rama `main`** (la `master` está EOL para 0.12). **Requiere el CLI `tree-sitter`** (npm) para compilar parsers. Highlight se arranca por buffer con `vim.treesitter.start()` en autocmd FileType.
-- **ESLint**: el LSP solo se activa si encuentra config subiendo por el árbol (gate en `root_dir`). Config **por proyecto** con `eslint-init` (config + deps locales). **No usar config global en `~/Code`** — se cuela en los proyectos de trabajo (ver gotcha #8). `eslint_d` quitado de nvim-lint.
+- **ESLint**: el LSP solo se activa si encuentra config subiendo por el árbol (gate en `root_dir`). Config **por proyecto** con `eslint-init` (config + deps locales). **No usar config global en `~/Code`** — se cuela en los proyectos de trabajo (ver gotcha #8). nvim-lint y `eslint_d` eliminados del todo (ago 2026): el único lint es el LSP de eslint.
 - **Colorschemes**: tokyonight (oscuro, default), **flexoki-light** (claro), kanagawa, catppuccin, rose-pine. El colorscheme lo decide `~/.config/theme-mode` (ver THEME.md).
 - **lualine** `theme="auto"` → sigue el tema (oscuro/claro) automáticamente.
 - **Portapapeles**: `unnamedplus`; solo `y` (yank) va al portapapeles; `d/c/x` van al "black hole"; `<leader>d` = cortar al portapapeles; en visual `p` no pisa el yank.

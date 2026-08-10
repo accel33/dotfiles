@@ -141,9 +141,9 @@
   <div><span class="k" style="color:var(--find)">f</span> · Find (búsqueda difusa)</div>
   <div><span class="k" style="color:var(--win)">s</span> · Split (ventanas)</div>
   <div><span class="k" style="color:var(--tab)">␣␣</span> · Buffers (alternar)</div>
-  <div><span class="k" style="color:var(--git)">h</span> · Hunk (cambios de git)</div>
+  <div><span class="k" style="color:var(--git)">lg</span> · LazyGit (todo lo de git)</div>
   <div><span class="k" style="color:var(--diag)">x</span> · Trouble (errores)</div>
-  <div><span class="k" style="color:var(--fmt)">m</span> · forMat &nbsp;·&nbsp; <span class="k" style="color:var(--fmt)">l</span> · Lint</div>
+  <div><span class="k" style="color:var(--fmt)">m</span> · forMat (prettier/stylua)</div>
   <div><span class="k" style="color:var(--sess)">w</span> · Workspace (sesión)</div>
   <div><span class="k" style="color:var(--lsp)">g</span> · Goto &nbsp;·&nbsp; <span class="k" style="color:var(--lsp)">r/c</span> · rename/code</div>
 </div>
@@ -269,17 +269,10 @@
 </div>
 
 <div class="card git">
-  <h2>Git — cambios por bloque (gitsigns) <span class="why">h = Hunk</span></h2>
+  <h2>Git <span class="why">todo el flujo va por LazyGit</span></h2>
   <table>
-    <tr><td class="key"><span class="muted">¿hunk?</span></td><td class="desc">Un <b>hunk</b> es un <b>bloque de líneas consecutivas modificadas</b> respecto al último commit.</td></tr>
-    <tr><td class="key"><kbd>]h</kbd> / <kbd>[h</kbd></td><td class="desc"><b>Saltar</b> al hunk siguiente / anterior</td></tr>
-    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>hs</kbd> / <kbd>hr</kbd></td><td class="desc"><b>Stage / Reset</b> del hunk<span class="d">stage = marcarlo para el commit · reset = descartar el cambio</span></td></tr>
-    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>hS</kbd> / <kbd>hR</kbd></td><td class="desc"><b>Stage / Reset</b> del archivo entero</td></tr>
-    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>hp</kbd></td><td class="desc"><b>Previsualizar</b> el hunk (qué cambió)</td></tr>
-    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>hu</kbd></td><td class="desc"><b>Deshacer</b> el último stage</td></tr>
-    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>hb</kbd> / <kbd>hB</kbd></td><td class="desc"><b>Blame de la línea</b> (quién la cambió) · toggle blame permanente</td></tr>
-    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>hd</kbd></td><td class="desc"><b>Diff</b> del archivo vs. git</td></tr>
-    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>lg</kbd></td><td class="desc"><b>Abrir LazyGit</b>: interfaz completa de git (commit, push, ramas…)</td></tr>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>lg</kbd></td><td class="desc"><b>Abrir LazyGit</b>: interfaz completa de git (stage, commit, push, ramas, diff, blame…)<span class="d">Teclas de lazygit: ver docs/lazygit-cheatsheet.md</span></td></tr>
+    <tr><td class="key"><span class="muted">marcas │</span></td><td class="desc">Las <b>marcas del margen</b> (│ verde/azul/rojo) las pinta gitsigns: líneas añadidas / modificadas / borradas vs. el último commit<span class="d">Solo informativas — los atajos de hunks (␣h*) se quitaron; todo se hace en LazyGit</span></td></tr>
   </table>
 </div>
 
@@ -294,11 +287,10 @@
 </div>
 
 <div class="card fmt">
-  <h2>Formato &amp; Lint <span class="why">m = forMat · l = Lint</span></h2>
+  <h2>Formato <span class="why">m = forMat</span></h2>
   <table>
-    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>mp</kbd></td><td class="desc"><b>Formatear</b> el archivo o la selección<span class="d">Usa prettier (JS/TS/JSON/YAML/MD) o stylua (Lua)</span></td></tr>
-    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>l</kbd></td><td class="desc"><b>Lint</b> ahora (eslint_d) — buscar problemas de estilo/errores</td></tr>
-    <tr><td class="key"><span class="muted">automático</span></td><td class="desc">Se <b>formatea solo al guardar</b> y se hace <b>lint al guardar / salir de insert</b></td></tr>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>mp</kbd></td><td class="desc"><b>Formatear</b> el archivo o la selección<span class="d">Usa prettier (JS/TS/JSON/YAML/MD), stylua (Lua) o google-java-format (Java)</span></td></tr>
+    <tr><td class="key"><span class="muted">automático</span></td><td class="desc">Se <b>formatea solo al guardar</b>. El <b>lint</b> lo hace en vivo el LSP de eslint (solo en proyectos con config de eslint)</td></tr>
   </table>
 </div>
 

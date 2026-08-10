@@ -51,7 +51,6 @@ return {
       ensure_installed = {
         "prettier", -- prettier formatter
         "stylua", -- lua formatter
-        "eslint_d",
         -- Java (usados por ftplugin/java.lua de forma condicional):
         "java-debug-adapter", -- DAP para depurar Java (nvim-dap)
         "java-test", -- correr/depurar tests JUnit desde nvim-jdtls
