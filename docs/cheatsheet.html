@@ -2,25 +2,80 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
+<title>Cheatsheet — Neovim &amp; tmux · config de accel</title>
+<script>
+  // Tema: OSCURO por defecto (Tokyo Night, igual que nvim/WezTerm/k9s).
+  // Para el claro (Flexoki): abre el archivo con  #light  al final de la URL
+  // (build-pdf.sh lo hace con la opción --light).
+  (function () {
+    var q = (location.hash + location.search).toLowerCase();
+    document.documentElement.setAttribute("data-theme", /light/.test(q) ? "light" : "dark");
+  })();
+</script>
 <style>
-  @page { size: A4; margin: 14mm 14mm; }
+  /* Márgenes en 0 para que el fondo del tema llegue al BORDE del papel: Chrome
+     recorta todo lo pintado al área de contenido, así que el margen de @page
+     saldría blanco. El aire lo pone el padding del body. */
+  @page { size: A4; margin: 0; }
   * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* ── Tema OSCURO (default) — Tokyo Night, el mismo de nvim/WezTerm/k9s ── */
   :root{
-    --ink:#1b2130; --muted:#5c6675; --line:#e4e8f0; --soft:#f6f8fc;
-    --kbd-bg:#2b3140; --kbd-fg:#eef1f6; --spc:#0ea5a4;
-    --nv:#7c3aed; --tm:#0891b2;
+    --bg:#1a1b26; --ink:#c8d3f5; --strong:#eaf0ff; --muted:#8b95c9;
+    --line:#2f3549; --row:#23263a; --soft:#1f2335;
+    --kbd-bg:#2f3549; --kbd-fg:#d5dcff; --kbd-bd:#414868;
+    --spc:#7dcfff; --spc-fg:#16161e; --head-fg:#16161e;
+    --nv1:#9d7cd8; --nv2:#bb9af7; --tm1:#2ac3de; --tm2:#7dcfff;
+    --te1:#9ece6a; --te2:#b9f27c;
+    --gen:#9aa5ce; --clip:#73daca; --win:#7aa2f7; --tab:#bb9af7;
+    --exp:#9ece6a; --find:#e0af68; --lsp:#f7768e; --git:#ff9e64;
+    --diag:#9d7cd8; --fmt:#2ac3de; --sess:#b9f27c; --edit:#ff007c; --cmp:#89ddff;
+    --note-bg:#2a2213; --note-bd:#4d3f1c; --note-ac:#e0af68; --note-fg:#e0af68;
+    --info-bg:#182236; --info-bd:#28375c; --info-ac:#7aa2f7; --info-fg:#7aa2f7;
+    --code-bg:#2f3549; --code-fg:#c8d3f5;
+  }
+  /* ── Tema CLARO — Flexoki / el diseño original ── */
+  :root[data-theme="light"]{
+    --bg:#ffffff; --ink:#1b2130; --strong:#111111; --muted:#5c6675;
+    --line:#e4e8f0; --row:#eef1f6; --soft:#f6f8fc;
+    --kbd-bg:#2b3140; --kbd-fg:#eef1f6; --kbd-bd:#2b3140;
+    --spc:#0ea5a4; --spc-fg:#eef1f6; --head-fg:#ffffff;
+    --nv1:#7c3aed; --nv2:#a855f7; --tm1:#0891b2; --tm2:#22b8cf;
+    --te1:#059669; --te2:#34d399;
     --gen:#6b7280; --clip:#0ea5a4; --win:#2563eb; --tab:#7c3aed;
     --exp:#059669; --find:#d97706; --lsp:#dc2626; --git:#e11d48;
     --diag:#9333ea; --fmt:#0891b2; --sess:#65a30d; --edit:#db2777; --cmp:#4f46e5;
+    --note-bg:#fff8ec; --note-bd:#f3d9a6; --note-ac:#e0a343; --note-fg:#a5680c;
+    --info-bg:#eef4ff; --info-bd:#cddcff; --info-ac:#2563eb; --info-fg:#1d4ed8;
+    --code-bg:#eef1f6; --code-fg:#1b2130;
   }
-  body{ font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif; color:var(--ink);
-        font-size:11px; line-height:1.5; }
-  h1.big{ font-size:23px; letter-spacing:.3px; }
+
+  /* forzar que los fondos SÍ se impriman al generar el PDF */
+  html{ background:var(--bg); -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  body{ background:var(--bg);
+        font-family:-apple-system,"Segoe UI",Helvetica,Arial,sans-serif; color:var(--ink);
+        font-size:11px; line-height:1.5;
+        -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+
+  /* Marco de página. Con @page{margin:0} perdemos los márgenes, y Chrome DESCARTA
+     el margin-top del bloque que cae al inicio de una página (verificado: solo lo
+     respeta en los saltos FORZADOS). El truco: <thead>/<tfoot> se REPITEN en cada
+     página impresa, así que un div de 13mm ahí da el aire arriba y abajo en TODAS.
+     El padding lateral va en la celda del cuerpo (ese sí aplica en cada página). */
+  table.sheet{ width:100%; border-collapse:separate; border-spacing:0; }
+  table.sheet>thead>tr>td, table.sheet>tfoot>tr>td{ padding:0; border:0; }
+  table.sheet .gut{ height:13mm; }
+  table.sheet>tbody>tr>td{ padding:0 14mm; border:0; vertical-align:top; }
+
+  h1.big{ font-size:23px; letter-spacing:.3px; color:var(--strong); }
   h1.big small{ font-weight:400; color:var(--muted); font-size:12px; }
-  .part{ font-size:16px; font-weight:800; color:#fff; padding:7px 12px; border-radius:7px;
+  .part{ font-size:16px; font-weight:800; color:var(--head-fg); padding:7px 12px; border-radius:7px;
          margin:20px 0 12px; letter-spacing:.4px; }
-  .part.nvim{ background:linear-gradient(90deg,var(--nv),#a855f7); }
-  .part.tmux{ background:linear-gradient(90deg,var(--tm),#22b8cf); page-break-before:always; }
+  /* la 1ª sección no necesita el margen de arriba (ya lo da el padding del body) */
+  .part.nvim{ background:linear-gradient(90deg,var(--nv1),var(--nv2)); }
+  .part.tmux{ background:linear-gradient(90deg,var(--tm1),var(--tm2)); }
+  .part.term{ background:linear-gradient(90deg,var(--te1),var(--te2)); }
+  .part.tmux, .part.term{ page-break-before:always; }
   .intro{ color:var(--muted); margin-bottom:14px; }
   .intro b{ color:var(--spc); }
 
@@ -31,30 +86,33 @@
   .legend .k{ font-weight:800; }
 
   .card{ break-inside:avoid; border:1px solid var(--line); border-radius:8px;
-         margin-bottom:13px; overflow:hidden; }
-  .card h2{ font-size:12.5px; color:#fff; padding:6px 12px; letter-spacing:.2px;
+         margin-bottom:13px; overflow:hidden; background:var(--soft); }
+  .card h2{ font-size:12.5px; color:var(--head-fg); padding:6px 12px; letter-spacing:.2px;
             display:flex; justify-content:space-between; align-items:baseline; }
   .card h2 .why{ font-weight:400; font-size:10px; opacity:.92; }
   table{ width:100%; border-collapse:collapse; }
-  td{ padding:5px 12px; vertical-align:top; border-top:1px solid #eef1f6; }
+  td{ padding:5px 12px; vertical-align:top; border-top:1px solid var(--row); }
   tr:first-child td{ border-top:none; }
   td.key{ white-space:nowrap; width:130px; }
-  td.desc b{ color:#111; }
+  td.desc b{ color:var(--strong); }
   td.desc .d{ display:block; color:var(--muted); font-size:9.8px; line-height:1.4; margin-top:1px; }
-  kbd{ background:var(--kbd-bg); color:var(--kbd-fg); border-radius:4px;
+  kbd{ background:var(--kbd-bg); color:var(--kbd-fg); border:1px solid var(--kbd-bd); border-radius:4px;
        padding:1px 5px; font-family:"SF Mono",Menlo,Consolas,monospace;
        font-size:9.6px; white-space:nowrap; display:inline-block; margin:1px 0; }
-  kbd.sp{ background:var(--spc); }
+  kbd.sp{ background:var(--spc); color:var(--spc-fg); border-color:var(--spc); }
+  code{ background:var(--code-bg); color:var(--code-fg); border-radius:3px; padding:0 4px;
+        font-family:"SF Mono",Menlo,Consolas,monospace; font-size:9.6px; }
   .muted{ color:var(--muted); font-style:italic; }
 
-  .note{ background:#fff8ec; border:1px solid #f3d9a6; border-left:4px solid #e0a343;
+  .note{ background:var(--note-bg); border:1px solid var(--note-bd); border-left:4px solid var(--note-ac);
          border-radius:7px; padding:9px 13px; margin-bottom:13px; font-size:10.3px; }
-  .note b{ color:#a5680c; }
-  .explain{ background:#eef4ff; border:1px solid #cddcff; border-left:4px solid #2563eb;
-            border-radius:7px; padding:10px 14px; margin-bottom:13px; font-size:10.3px; }
-  .explain b{ color:#1d4ed8; }
+  .note b{ color:var(--note-fg); }
+  .explain{ background:var(--info-bg); border:1px solid var(--info-bd); border-left:4px solid var(--info-ac);
+            border-radius:7px; padding:10px 14px; margin-bottom:13px; font-size:10.3px;
+            break-inside:avoid; }
+  .explain b{ color:var(--info-fg); }
   .explain .row{ margin:4px 0; }
-  .explain .t{ font-weight:700; color:#111; }
+  .explain .t{ font-weight:700; color:var(--strong); }
 
   .gen h2{background:var(--gen)} .clip h2{background:var(--clip)} .win h2{background:var(--win)}
   .tab h2{background:var(--tab)} .exp h2{background:var(--exp)} .find h2{background:var(--find)}
@@ -66,6 +124,10 @@
 </style>
 </head>
 <body>
+<table class="sheet">
+<thead><tr><td><div class="gut"></div></td></tr></thead>
+<tfoot><tr><td><div class="gut"></div></td></tr></tfoot>
+<tbody><tr><td>
 
 <h1 class="big">Cheatsheet — Neovim &amp; tmux <small>· config de accel</small></h1>
 
@@ -78,7 +140,7 @@
   <div><span class="k" style="color:var(--exp)">e</span> · Explorer (árbol de archivos)</div>
   <div><span class="k" style="color:var(--find)">f</span> · Find (búsqueda difusa)</div>
   <div><span class="k" style="color:var(--win)">s</span> · Split (ventanas)</div>
-  <div><span class="k" style="color:var(--tab)">t</span> · Tab / Terminal</div>
+  <div><span class="k" style="color:var(--tab)">␣␣</span> · Buffers (alternar)</div>
   <div><span class="k" style="color:var(--git)">h</span> · Hunk (cambios de git)</div>
   <div><span class="k" style="color:var(--diag)">x</span> · Trouble (errores)</div>
   <div><span class="k" style="color:var(--fmt)">m</span> · forMat &nbsp;·&nbsp; <span class="k" style="color:var(--fmt)">l</span> · Lint</div>
@@ -117,19 +179,16 @@
     <tr><td class="key"><kbd class="sp">␣</kbd><kbd>sm</kbd></td><td class="desc"><b>Maximizar / restaurar</b> el split (foco temporal)</td></tr>
     <tr><td class="key"><kbd class="sp">␣</kbd><kbd>sr</kbd></td><td class="desc"><b>Modo resize incremental</b>: luego tap <kbd>h/l</kbd> (ancho) o <kbd>j/k</kbd> (alto), repetible; otra tecla sale<span class="d">Ideal para agrandar nvim-tree: ␣sr y tap l l l</span></td></tr>
     <tr><td class="key"><kbd>⌃h</kbd><kbd>⌃j</kbd><kbd>⌃k</kbd><kbd>⌃l</kbd></td><td class="desc"><b>Moverte entre splits</b> (y entre panes de tmux)<span class="d">Mismas teclas funcionan en vim y en tmux gracias a vim-tmux-navigator</span></td></tr>
+    <tr><td class="key"><span class="muted">split vs pane</span></td><td class="desc"><b>Split de nvim</b> = dividir el EDITOR (dos vistas de código en el mismo nvim, comparten yank/LSP/saltos). <b>Pane de tmux</b> = dividir el TERMINAL (editor + shell/tests, procesos independientes)<span class="d">Regla: código-vs-código → split de nvim · editor-vs-shell → pane de tmux</span></td></tr>
   </table>
 </div>
 
 <div class="card tab">
-  <h2>Pestañas &amp; Terminal <span class="why">t = Tab</span></h2>
+  <h2>Buffers <span class="why">un buffer = un archivo abierto en memoria</span></h2>
   <table>
-    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>to</kbd></td><td class="desc"><b>Abrir</b> pestaña nueva &nbsp; <span class="muted">(to = tab open)</span></td></tr>
-    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>tx</kbd></td><td class="desc"><b>Cerrar</b> pestaña</td></tr>
-    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>tn</kbd> / <kbd class="sp">␣</kbd><kbd>tp</kbd></td><td class="desc"><b>Siguiente / anterior</b> pestaña</td></tr>
-    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>tf</kbd></td><td class="desc"><b>Abrir el buffer actual</b> en una pestaña nueva</td></tr>
-    <tr><td class="key"><kbd class="sp">␣</kbd><kbd class="sp">␣</kbd></td><td class="desc"><b>Alternar</b> entre el buffer actual y el anterior<span class="d">La barra de arriba (bufferline) muestra un tab por archivo abierto</span></td></tr>
+    <tr><td class="key"><kbd class="sp">␣</kbd><kbd class="sp">␣</kbd></td><td class="desc"><b>Alternar</b> entre el buffer actual y el anterior<span class="d">Ya NO hay barra de tabs arriba (se quitó: se acumulaban). El archivo actual se ve abajo, en lualine</span></td></tr>
     <tr><td class="key"><kbd class="sp">␣</kbd><kbd>bm</kbd></td><td class="desc"><b>Buffers sin guardar</b> (:ls +) &nbsp;·&nbsp; <kbd>:ls</kbd> = todos<span class="d">El + en la lista marca los modificados. Salta con :b N</span></td></tr>
-    <tr><td class="key"><span class="muted">terminal</span></td><td class="desc">Para una terminal usa un <b>pane de tmux</b> (Ctrl+j al de abajo), no una terminal interna de nvim</td></tr>
+    <tr><td class="key"><span class="muted">pestañas / terminal</span></td><td class="desc">Ya <b>no las maneja nvim</b>: las "pestañas" son <b>ventanas de tmux</b> (prefix + c/n/p) y para una shell usas un <b>pane de tmux</b> (Ctrl+j al de abajo)<span class="d">Los tabpages nativos de nvim siguen existiendo con :tabnew/:tabn si algún día los quieres, pero sin atajos de leader</span></td></tr>
   </table>
 </div>
 
@@ -151,7 +210,7 @@
     <tr><td class="key"><kbd>r</kbd> &nbsp; <kbd>d</kbd></td><td class="desc"><b>Renombrar</b> &nbsp;·&nbsp; <b>Borrar</b> (va a la Papelera)</td></tr>
     <tr><td class="key"><kbd>x</kbd> <kbd>c</kbd> <kbd>p</kbd></td><td class="desc"><b>Cortar · Copiar · Pegar</b> archivos</td></tr>
     <tr><td class="key"><kbd>y</kbd> <kbd>Y</kbd> <kbd>gy</kbd> <kbd>ge</kbd></td><td class="desc"><b>Copiar al portapapeles:</b><span class="d"><b>y</b> = nombre (index.js) · <b>Y</b> = ruta relativa (src/index.js) · <b>gy</b> = ruta absoluta (/Users/…/src/index.js) · <b>ge</b> = nombre sin extensión (index)</span></td></tr>
-    <tr><td class="key"><kbd>⏎</kbd> <kbd>⌃v</kbd> <kbd>⌃x</kbd> <kbd>⌃t</kbd></td><td class="desc"><b>Abrir</b> · en <b>split vertical</b> · en <b>split horizontal</b> · en <b>pestaña nueva</b></td></tr>
+    <tr><td class="key"><kbd>⏎</kbd> <kbd>⌃v</kbd> <kbd>⌃x</kbd> <kbd>⌃t</kbd></td><td class="desc"><b>Abrir</b> · en <b>split vertical</b> · en <b>split horizontal</b> · en <b>pestaña nueva</b><span class="d">⚠️ ⌃t abre un tabpage que ya NO se ve (sin barra arriba): sales con <code>:tabc</code>. Usa ⌃v / ⌃x</span></td></tr>
     <tr><td class="key"><kbd>Tab</kbd> &nbsp; <kbd>P</kbd> &nbsp; <kbd>-</kbd></td><td class="desc"><b>Previsualizar</b> sin salir del árbol · ir a la <b>carpeta padre</b> · <b>subir</b> un nivel de raíz</td></tr>
     <tr><td class="key"><kbd>H</kbd> <kbd>I</kbd> <kbd>E</kbd> <kbd>W</kbd></td><td class="desc"><b>Ver ocultos</b> (dotfiles) · ver <b>git-ignored</b> · <b>Expandir</b> todo · <b>Colapsar</b> todo</td></tr>
     <tr><td class="key"><kbd>g?</kbd></td><td class="desc"><b>Ayuda</b>: lista TODOS los atajos del árbol</td></tr>
@@ -359,7 +418,7 @@ Abajo lo escribo como <kbd class="sp">⌃a</kbd> <kbd>tecla</kbd>.</div>
 </div>
 
 <!-- ============================ TERMINAL ============================ -->
-<div class="part" style="background:linear-gradient(90deg,#059669,#34d399); page-break-before:always;">💻  TERMINAL (zsh + WezTerm)</div>
+<div class="part term">💻  TERMINAL (zsh + WezTerm)</div>
 <div class="intro">Tu shell es <b>zsh</b> en <b>WezTerm</b>. Estas teclas ya están configuradas para sentirse como macOS.</div>
 
 <div class="explain">
@@ -424,5 +483,8 @@ Abajo lo escribo como <kbd class="sp">⌃a</kbd> <kbd>tecla</kbd>.</div>
 <footer>
   Neovim · tmux · terminal (zsh) · config de accel · github.com/accel33/dotfiles
 </footer>
+
+</td></tr></tbody>
+</table>
 </body>
 </html>
