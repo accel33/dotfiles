@@ -14,6 +14,8 @@ return {
   -- setting the keybinding for LazyGit with 'keys' is recommended in
   -- order to load the plugin when the command is run for the first time
   keys = {
-    { "<leader>lg", "<cmd>LazyGit<cr>", desc = "Open lazy git" },
+    -- UNA sola tecla y sin <leader>lg como alias: si existieran ambos, ␣l
+    -- tendría que esperar el timeout para saber si viene la g -> lento.
+    { "<leader>l", "<cmd>LazyGit<cr>", desc = "LazyGit" },
   },
 }
