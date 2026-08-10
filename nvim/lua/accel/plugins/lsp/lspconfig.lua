@@ -19,17 +19,11 @@ return {
         -- See `:help vim.lsp.*` for documentation on any of the below functions
         local opts = { buffer = ev.buf, silent = true }
 
-        -- Neovim 0.11+ define grr/grn/gra/gri/grt por defecto -> 'gr' queda ambiguo
-        -- (which-key muestra el menú y espera el 3er carácter). Los quitamos para que
-        -- 'gr' dispare referencias al instante. (rename/code-action ya los tienes en <leader>.)
-        for _, k in ipairs({ "grr", "grn", "gra", "gri", "grt" }) do
-          pcall(vim.keymap.del, "n", k)
-        end
+        -- (El borrado de grr/grn/gra/gri/grt y el keymap `gr` viven en
+        --  core/keymaps.lua para que funcionen SIEMPRE, incluso antes de que
+        --  el LSP se adjunte al buffer.)
 
         -- set keybinds
-        opts.desc = "Show LSP references"
-        keymap.set("n", "gr", "<cmd>Telescope lsp_references<CR>", opts) -- ir a referencias (directo)
-
         opts.desc = "Go to declaration"
         keymap.set("n", "gD", vim.lsp.buf.declaration, opts) -- go to declaration
 

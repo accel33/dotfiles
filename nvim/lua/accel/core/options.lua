@@ -31,6 +31,11 @@ opt.smartcase = true -- if you include mixed case in your search, asumes you wan
 
 opt.cursorline = true
 
+-- Nada de barra de tabs arriba (bufferline está desactivado). 0 = no mostrarla NUNCA;
+-- el default (1) la sacaría igual en cuanto exista un tabpage, p.ej. al abrir un
+-- archivo con Ctrl+t desde nvim-tree. El archivo actual se ve abajo, en lualine.
+opt.showtabline = 0
+
 -- turn on termguicolors for tokyonight coloscheme to work
 -- (have to use iterm2 or any other true color terminal)
 opt.termguicolors = true

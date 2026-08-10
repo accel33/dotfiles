@@ -9,6 +9,72 @@ local keymap = vim.keymap -- for conciseness
 -- clear search
 keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
 
+-- Neovim 0.11+ define por defecto grr/grn/gra/gri/grt (references/rename/action/…).
+-- Como todos son prefijo `gr`, which-key espera el 3er carácter y `gr` queda ambiguo
+-- (si tecleas despacio sale un menú). Los borramos aquí al arrancar Y en cada buffer
+-- nuevo (algunos ftplugins los redefinen). Así `gr` es SIEMPRE ir-a-referencias.
+local function purge_gr_defaults()
+  for _, k in ipairs({ "grr", "grn", "gra", "gri", "grt" }) do
+    pcall(vim.keymap.del, "n", k)
+    pcall(vim.keymap.del, "n", k, { buffer = 0 })
+  end
+end
+purge_gr_defaults()
+vim.api.nvim_create_autocmd({ "BufEnter", "LspAttach" }, {
+  group = vim.api.nvim_create_augroup("PurgeGrDefaults", { clear = true }),
+  callback = purge_gr_defaults,
+})
+
+-- `gr` = referencias LSP, SIEMPRE, por lento que teclees.
+--
+-- ¿Por qué no basta `keymap.set("n", "gr", ...)`? Porque vim tiene un comando
+-- BUILTIN `gr{char}` ("replace virtual char") que espera un carácter más. Eso hace
+-- `gr` ambiguo y verificado empíricamente ningún ajuste de timeout lo resuelve:
+--   · timeout ON  + rápido      -> funciona (pero con un delay de timeoutlen)
+--   · timeout ON  + lento       -> vence el timeout del `g`, gana el builtin `gr`
+--                                  y te REEMPLAZA una letra del archivo (el bug)
+--   · timeout ON  + len enorme  -> tras la `r` espera ESE tiempo -> parece colgado
+--   · timeout OFF               -> nunca dispara solo con `g`+`r`
+--
+-- Solución: mapeamos `g` y leemos el siguiente carácter nosotros con getcharstr(),
+-- que espera INDEFINIDAMENTE y no pasa por el sistema de timeouts. Si es `r` vamos
+-- a referencias; cualquier otra cosa (`gg`, `gd`, `gc`, `gb`, `gU`, …) se reenvía
+-- tal cual para que se comporte como siempre. Efecto extra: al ser `g` un mapeo
+-- completo, which-key ya no abre el menú de opciones al pulsar `g`.
+keymap.set("n", "g", function()
+  local count = vim.v.count > 0 and tostring(vim.v.count) or ""
+  local ok, ch = pcall(vim.fn.getcharstr) -- espera sin límite de tiempo
+  if not ok or ch == nil or ch == "" or ch == "\27" then
+    return -- Esc / interrupción -> cancelar
+  end
+  if ch == "r" then
+    if not pcall(vim.cmd, "Telescope lsp_references") then
+      vim.lsp.buf.references()
+    end
+    return
+  end
+  -- Reenviar `g` + la tecla. OJO con la recursión: si reenviamos con remap y la
+  -- tecla es otra `g`, este mismo mapeo se dispararía otra vez (rompía `gg`).
+  -- Regla: si existe algún mapeo que EMPIECE por `g<tecla>` (gd, gb, gc, gcc…)
+  -- reenviamos con remap ("m") para que funcione; si no, es un comando builtin
+  -- (gg, gU, gq, g_, ge…) y lo reenviamos SIN remap ("n") para no re-entrar aquí.
+  -- (No usamos mapcheck(): también da match con este mapeo `g`, y siempre elegía
+  --  remap -> recursión.)
+  local prefix = "g" .. ch
+  local function has_map(list)
+    for _, m in ipairs(list) do
+      if m.lhs and #m.lhs >= #prefix and m.lhs:sub(1, #prefix) == prefix then
+        return true
+      end
+    end
+    return false
+  end
+  local mode = (has_map(vim.api.nvim_buf_get_keymap(0, "n")) or has_map(vim.api.nvim_get_keymap("n")))
+      and "m"
+    or "n"
+  vim.api.nvim_feedkeys(count .. "g" .. ch, mode, false)
+end, { desc = "g (gr = referencias LSP, sin timeout)" })
+
 -- salir a modo normal con kj (insert)
 keymap.set("i", "kj", "<Esc>", { desc = "Salir a modo normal (kj)" })
 keymap.set("i", "jk", "<Esc>", { desc = "Salir a modo normal (kj)" })
@@ -33,7 +99,7 @@ keymap.set({ "n", "x" }, "<leader>d", '"+d', { desc = "Cortar al portapapeles" }
 keymap.set("x", "p", '"_dP', { desc = "Pegar sin perder el yank" })
 
 -------------------------
---  SPLITS & TABS
+--  SPLITS  (ventanas DENTRO de nvim; las "pestañas"/ventanas del terminal las maneja tmux)
 -------------------------
 
 -- increment/decrement
@@ -70,12 +136,9 @@ keymap.set("n", "<leader>sr", function()
   vim.api.nvim_echo({ { "", "" } }, false, {})
 end, { desc = "Modo resize (hjkl, estilo tmux)" })
 
--- tabs
-keymap.set("n", "<leader>to", "<cmd>tabnew<CR>", { desc = "Open new tab" })
-keymap.set("n", "<leader>tx", "<cmd>tabclose<CR>", { desc = "Close tab" })
-keymap.set("n", "<leader>tn", "<cmd>tabn<CR>", { desc = "Next tab" })
-keymap.set("n", "<leader>tp", "<cmd>tabp<CR>", { desc = "Previous tab" })
-keymap.set("n", "<leader>tf", "<cmd>tabnew %<CR>", { desc = "Open buffer in new tab" })
+-- (Pestañas de nvim eliminadas: ahora las "pestañas" son ventanas de tmux
+--  [prefix + c/n/p]. Los tabpages nativos siguen existiendo si algún día los
+--  necesitas con :tabnew / :tabn / :tabclose, pero sin atajos de <leader>.)
 
 -------------------------
 --  BUFFERS
