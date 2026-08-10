@@ -18,8 +18,8 @@
 | `<leader>sr` | Modo resize incremental (h/l ancho, j/k alto, repetible; otra tecla sale) |
 | `gr` | Referencias LSP **directo** (se borran los defaults `grr/grn/gra/gri/grt` de nvim 0.11 que lo hacían ambiguo) |
 
-- **bufferline** en modo `buffers` (un tab por archivo, estilo VSCode).
-- **lualine** muestra ruta relativa (`path=1`) → distingue archivos con el mismo nombre.
+- ~~**bufferline** en modo `buffers` (un tab por archivo, estilo VSCode).~~ **Revertido en ago 2026**: los tabs se acumulaban y confundían. Ahora `enabled = false` + `showtabline = 0` → arriba no aparece nada. Los buffers siguen abiertos (`<leader><leader>`, `<leader>fb`, `:ls +`).
+- ~~**lualine** muestra ruta relativa (`path=1`).~~ **Ago 2026**: `path=0`, solo el nombre del archivo.
 - **nvim-tree** resalta y sigue el archivo actual (`update_focused_file`).
 - **mason**: `+jdtls` (Java) — ⚠️ necesita **JDK 21+** para arrancar (hay solo Java 13; falta `brew install --cask zulu21` + `JAVA_HOME`).
 

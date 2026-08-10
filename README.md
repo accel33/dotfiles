@@ -2,6 +2,8 @@
 
 Configuración personal de macOS: **Neovim + tmux + WezTerm + zsh**, gestionada con symlinks y versionada en GitHub (`accel33/dotfiles`).
 
+> **🗺️ ¿Qué es cada archivo y cómo funciona todo?** → [`docs/MAPA.md`](docs/MAPA.md) (incluye el flujo de máquina nueva explicado).
+>
 > **🤖 Para la próxima sesión de Claude (o para mí):** este README + [`docs/THEME.md`](docs/THEME.md) resumen TODO lo montado. Lee primero la sección **"Gotchas / lecciones aprendidas"** — hay varias trampas (recargas, SIGUSR1 que mata WezTerm, glyphs powerline, treesitter main, etc.) que costó descubrir. La config real vive en este repo; explórala libremente.
 
 ---
@@ -10,7 +12,7 @@ Configuración personal de macOS: **Neovim + tmux + WezTerm + zsh**, gestionada 
 
 ```
 ~/dotfiles/
-├── install.sh              # crea todos los symlinks (y ~/.tmux/resurrect)
+├── install.sh              # symlinks + theme-mode + tpm + ~/.tmux/resurrect + skin k9s (idempotente)
 ├── Brewfile                # todo el software (brew bundle install)
 ├── nvim/                   # → ~/.config/nvim   (Neovim, lua/accel)
 ├── zsh/                    # → ~   (.zshrc .zshenv .zprofile .profile .p10k.zsh)
@@ -21,27 +23,55 @@ Configuración personal de macOS: **Neovim + tmux + WezTerm + zsh**, gestionada 
 └── docs/                   # scripts y plantillas (ver abajo)
     ├── theme.sh            # comando `theme` (día/noche: nvim+wezterm+tmux)
     ├── setup-eslint.sh     # instala eslint en el proyecto actual
-    ├── build-pdf.sh        # regenera el PDF del cheatsheet
-    ├── cheatsheet.html     # fuente del cheatsheet (nvim+tmux+terminal)
+    ├── build-pdf.sh        # regenera el PDF del cheatsheet (OSCURO por defecto; --light para el claro)
+    ├── cheatsheet.html     # fuente del cheatsheet (nvim+tmux+terminal); el tema lo elige #dark/#light
     ├── lazygit-cheatsheet.md    # teclas y conceptos de git + lazygit
-    ├── sesion-2026-07-20.md     # handoff de sesión (k9s, tmux, LSP, buffers, repos)
+    ├── THEME.md            # cómo funciona el sistema de temas día/noche
+    ├── JAVA.md             # cómo quedó montado Java (jdtls) en Neovim
+    ├── HANDOFF.md          # notas de la última sesión (contexto para el próximo Claude/tú)
+    ├── MAPA.md             # 🗺️ qué es cada archivo, cómo se conecta todo, flujo de máquina nueva
     └── eslint.config.example.js  # plantilla de eslint (JS/TS)
 ```
 
 ## 🚀 Instalación en una máquina nueva
 
+Secuencia completa y EN ESTE ORDEN (el Brewfile trae entradas `npm`, así que
+node/nvm van antes del bundle):
+
 ```bash
+# 1) Homebrew (si la máquina no lo tiene)
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# 2) nvm + node LTS (el bundle instala paquetes npm; necesita node ya presente)
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
+\. "$HOME/.nvm/nvm.sh" && nvm install --lts
+
+# 3) que cada versión nueva de node traiga las herramientas globales sola (gotcha #10)
+printf '%s\n' @typescript/native-preview tree-sitter-cli prettier > ~/.nvm/default-packages
+
+# 4) oh-my-zsh (deja el .zshrc por defecto; el nuestro lo enlaza install.sh después)
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+# 5) el repo + todo el software + symlinks
 git clone git@github.com:accel33/dotfiles.git ~/dotfiles
 cd ~/dotfiles
-brew bundle install --file=Brewfile        # todo el software
-./install.sh                                # symlinks + ~/.tmux/resurrect
-# extras que no maneja brew:
-npm install -g @typescript/native-preview tree-sitter-cli prettier   # tsgo + parsers de nvim + formatter
-# (con nvm) para que CADA nueva versión de node los traiga sola:
-printf '%s\n' @typescript/native-preview tree-sitter-cli prettier > ~/.nvm/default-packages
-# oh-my-zsh: https://ohmyz.sh · tpm: git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+brew bundle install --file=Brewfile   # brew + casks + npm globales (Chrome se "adopta" si ya existe)
+./install.sh                          # symlinks · theme-mode · tpm · resurrect · skin k9s
+exec zsh
 ```
-Luego: abre nvim (`:Lazy sync` instala plugins), y en tmux `prefix + I` (instala plugins con tpm).
+
+Después, dentro de las apps:
+- **nvim**: al abrirlo, lazy instala los plugins solo (o `:Lazy sync`); los parsers de treesitter se compilan con el CLI `tree-sitter` (ya viene del default-packages).
+- **tmux**: `prefix + I` para que tpm instale los plugins (tpm ya lo clonó install.sh).
+- **Java**: nada extra — `openjdk@21` viene en el Brewfile y jdtls/mason se instalan solos (ver [`docs/JAVA.md`](docs/JAVA.md)).
+
+Verificación rápida de que todo quedó:
+```bash
+nvim --headless "+checkhealth vim.lsp" +qa   # sin errores de LSP
+tmux new -s test                             # barra con tema; Ctrl+a I si faltan plugins
+java -version                                # openjdk 21.x
+cheatsheet                                   # regenera el PDF (usa Chrome headless)
+```
 
 ### 📦 `@types/node` en la carpeta padre de tus proyectos (autocompletado de Node)
 
@@ -61,7 +91,7 @@ cd ~/Code && npm i @types/node        # ~/Code es el default/ideal
 |---|---|
 | `theme 1` / `theme 2` / `theme` | **Día/noche**: cambia nvim + WezTerm + tmux + k9s juntos (1=oscuro, 2=claro, sin arg alterna). Ver [`docs/THEME.md`](docs/THEME.md) |
 | `eslint-init` | Instala eslint en el proyecto actual (copia plantilla + deps) |
-| `cheatsheet` | Regenera `~/Desktop/nvim_tmux_cheatsheet.pdf` desde `docs/cheatsheet.html` |
+| `cheatsheet` | Regenera `~/Desktop/nvim_tmux_cheatsheet.pdf` (**tema oscuro**, Tokyo Night) desde `docs/cheatsheet.html`. `cheatsheet --light` genera la versión clara en `…-light.pdf` |
 | `vim` | → `nvim` · `denos` → deno con permisos env/net |
 
 ---
@@ -89,6 +119,7 @@ cd ~/Code && npm i @types/node        # ~/Code es el default/ideal
 
 - **zsh**: oh-my-zsh + powerlevel10k (marco `%6F` cian = color del reloj; transient prompt). `cd`=zoxide, `ls`=eza. `Ctrl+Espacio` acepta la autosugerencia (también `→`/`C-F`/`C-E`). `Ctrl+P` comando anterior; `!!` último comando. gcloud usa `CLOUDSDK_PYTHON=python3.10`.
 - **WezTerm**: MesloLGS Nerd Font 19, Tokyo Night. **Teclas estilo macOS**: `⌥←/→` salta palabra, `⌘←/→` inicio/fin de línea, `⌘⌫` borra línea, `⌥⌫` borra palabra. Lee `~/.config/theme-mode` para el color scheme.
+- **Barra de título integrada** (ago 2026): sin barra de título nativa; los 3 botones de macOS van dentro de la barra de la app, pintada del mismo color que el terminal (`#1a1b26` de noche, `#FFFCF0` de día) → se ve como una sola pieza. Son 6 opciones que dependen entre sí (`INTEGRATED_BUTTONS` necesita la tab bar encendida, y `hide_tab_bar_if_only_one_tab` debe quedar en `false` o desaparecen los botones); están comentadas en [`wezterm/.wezterm.lua`](wezterm/.wezterm.lua). ⚠️ Como la barra no muestra pestañas, un `⌘t` de WezTerm abriría una pestaña **invisible**: las pestañas van por tmux (`prefix + c`).
 
 ---
 
@@ -111,9 +142,23 @@ cd ~/Code && npm i @types/node        # ~/Code es el default/ideal
     `nvim/queries/tmux/`. Resultado: sin warning y el parser se recompila solo en una
     máquina nueva. Verificado (build limpio + resaltado). Mismo patrón sirve para
     cualquier otro parser que dropeen en el futuro.
+12. **PDF a sangre (fondo oscuro que llega al borde del papel).** Chrome **recorta todo
+    lo que pintas al área de contenido**: con `@page{margin:14mm}` los márgenes salen
+    BLANCOS pase lo que pase — ni el fondo de `html`, ni `position:fixed` con inset
+    negativo (verificado: se recorta igual) llegan ahí, y `@page{background:…}` no
+    existe en Chrome. Única salida: **`@page{margin:0}`** y poner el aire uno mismo.
+    Pero entonces aparece el 2º problema: **Chrome DESCARTA el `margin-top` del bloque
+    que cae al inicio de una página** en los saltos *automáticos* (sí lo respeta en los
+    **forzados**, `page-break-before:always` — por eso las páginas de tmux/terminal sí
+    tenían aire y las demás no). Solución en `cheatsheet.html`: envolver todo en una
+    `<table class="sheet">` con un `<thead>`/`<tfoot>` que solo contienen un div de
+    13mm — **thead y tfoot se repiten en CADA página impresa**, así que dan el margen
+    superior e inferior en todas; el padding lateral va en el `<td>` del cuerpo (ese sí
+    aplica por página). Verificado midiendo los content streams del PDF: las 9 páginas
+    con fondo `#1a1b26` a sangre y ≥13mm de aire arriba.
 
 ## 📌 Pendientes / notas
 
 - Conflicto `<leader>d`: es "cortar al portapapeles" (global) y "diagnóstico de línea" (LSP, buffer-local). En archivos con LSP gana el diagnóstico. Sin resolver.
 - `{ name = "luasnip" }` está comentado en `nvim-cmp.lua` (decisión del usuario) → `Tab` ya no salta campos de snippet, solo cicla el menú.
-- **Cheatsheet PDF**: `~/Desktop/nvim_tmux_cheatsheet.pdf` (regenerar con `cheatsheet`). Fuente: `docs/cheatsheet.html`.
+- **Cheatsheet PDF**: `~/Desktop/nvim_tmux_cheatsheet.pdf` (regenerar con `cheatsheet`). Fuente: `docs/cheatsheet.html`. Desde 2026-08 sale en **oscuro** (Tokyo Night, el mismo fondo `#1a1b26` de nvim/WezTerm/k9s); `cheatsheet --light` da el claro. Ver gotcha #12 para el truco de los márgenes.
