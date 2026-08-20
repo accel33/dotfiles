@@ -58,6 +58,27 @@ brew "zsh-syntax-highlighting"
 brew "hashicorp/tap/terraform"
 # Tetris en la terminal (del tap de samtay)
 brew "samtay/tui/tetris"
+# ── Apps principales (adopt: si ya está instalada a mano, brew la adopta) ──
+# Passwords: se usa el de Apple (gratis, extensión oficial para Firefox).
+# Si algún día molesta o sales del ecosistema Apple: cask "bitwarden".
+# ChatGPT app de escritorio (Atlas descartado a propósito, ago 2026)
+cask "chatgpt-classic", args: { adopt: true }
+# Claude Desktop (Claude Code CLI va aparte, en la sección npm)
+cask "claude", args: { adopt: true }
+# Docker Desktop (el cask viejo "docker" quedó deprecado)
+cask "docker-desktop", args: { adopt: true }
+# Navegador principal (datos: Firefox Sync o copiar el perfil)
+cask "firefox", args: { adopt: true }
+# GUI de MongoDB
+cask "mongodb-compass", args: { adopt: true }
+# Notas (el vault vive en iCloud -> migra solo)
+cask "obsidian", args: { adopt: true }
+cask "steam", args: { adopt: true }
+# Solo instala el editor; los settings van por Settings Sync (las extensiones
+# sí están declaradas abajo en la sección vscode)
+cask "visual-studio-code", args: { adopt: true }
+cask "whatsapp", args: { adopt: true }
+
 cask "font-meslo-lg-nerd-font"
 # REQUERIDO por docs/build-pdf.sh (el cheatsheet se imprime con Chrome headless).
 # adopt: si Chrome ya existe (instalado a mano), brew lo adopta en vez de fallar.
@@ -68,6 +89,9 @@ cask "gcloud-cli"
 cask "key-codes"
 # Clipboard manager
 cask "maccy"
+# Launcher (la config NO viaja por dotfiles: exportar .rayconfig desde
+# Settings → Advanced → Export e importarlo en la máquina nueva)
+cask "raycast", args: { adopt: true }
 # Collaboration platform for API development
 cask "postman"
 # GPU-accelerated cross-platform terminal emulator and multiplexer

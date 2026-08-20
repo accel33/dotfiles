@@ -30,6 +30,7 @@ Configuración personal de macOS: **Neovim + tmux + WezTerm + zsh**, gestionada 
     ├── JAVA.md             # cómo quedó montado Java (jdtls) en Neovim
     ├── HANDOFF.md          # notas de la última sesión (contexto para el próximo Claude/tú)
     ├── MAPA.md             # 🗺️ qué es cada archivo, cómo se conecta todo, flujo de máquina nueva
+    ├── MIGRACION.md        # ✈️ checklist de migración de laptop (datos de apps que NO viajan por dotfiles)
     └── eslint.config.example.js  # plantilla de eslint (JS/TS)
 ```
 
