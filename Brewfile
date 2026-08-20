@@ -1,5 +1,3 @@
-tap "hashicorp/tap"
-tap "samtay/tui"
 # Resource monitor (htop moderno con gráficas)
 brew "btop"
 # Secure runtime for JavaScript and TypeScript
@@ -54,10 +52,6 @@ brew "zoxide"
 brew "zsh-autosuggestions"
 # Fish shell like syntax highlighting for zsh
 brew "zsh-syntax-highlighting"
-# Infra as code (del tap de hashicorp)
-brew "hashicorp/tap/terraform"
-# Tetris en la terminal (del tap de samtay)
-brew "samtay/tui/tetris"
 # ── Apps principales (adopt: si ya está instalada a mano, brew la adopta) ──
 # Passwords: se usa el de Apple (gratis, extensión oficial para Firefox).
 # Si algún día molesta o sales del ecosistema Apple: cask "bitwarden".
