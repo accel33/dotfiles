@@ -119,7 +119,7 @@ cd ~/Code && npm i @types/node        # ~/Code es el default/ideal
 
 ## 🐚 zsh + ✨ WezTerm
 
-- **zsh**: oh-my-zsh + powerlevel10k (marco `%6F` cian = color del reloj; transient prompt). `cd`=zoxide, `ls`=eza. `Ctrl+Espacio` acepta la autosugerencia (también `→`/`C-F`/`C-E`). `Ctrl+P` comando anterior; `!!` último comando. gcloud usa `CLOUDSDK_PYTHON=python3.10`.
+- **zsh**: oh-my-zsh + powerlevel10k (marco `%6F` cian = color del reloj; transient prompt). `cd`=zoxide, `ls`=eza. `Ctrl+Espacio` acepta la autosugerencia (también `→`/`C-F`/`C-E`). `Ctrl+P` comando anterior; `!!` último comando.
 - **WezTerm**: MesloLGS Nerd Font 19, Tokyo Night. **Teclas estilo macOS**: `⌥←/→` salta palabra, `⌘←/→` inicio/fin de línea, `⌘⌫` borra línea, `⌥⌫` borra palabra. Lee `~/.config/theme-mode` para el color scheme.
 - **Barra de título integrada** (ago 2026): sin barra de título nativa; los 3 botones de macOS van dentro de la barra de la app, pintada del mismo color que el terminal (`#1a1b26` de noche, `#FFFCF0` de día) → se ve como una sola pieza. Son 6 opciones que dependen entre sí (`INTEGRATED_BUTTONS` necesita la tab bar encendida, y `hide_tab_bar_if_only_one_tab` debe quedar en `false` o desaparecen los botones); están comentadas en [`wezterm/.wezterm.lua`](wezterm/.wezterm.lua). ⚠️ Como la barra no muestra pestañas, un `⌘t` de WezTerm abriría una pestaña **invisible**: las pestañas van por tmux (`prefix + c`).
 

@@ -26,8 +26,6 @@ brew "neovim"
 brew "openjdk@21"
 # Theme for zsh
 brew "powerlevel10k"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.10"
 # Search tool like grep and The Silver Searcher
 brew "ripgrep"
 # Terminal multiplexer
@@ -67,8 +65,6 @@ cask "font-meslo-lg-nerd-font"
 # REQUERIDO por docs/build-pdf.sh (el cheatsheet se imprime con Chrome headless).
 # adopt: si Chrome ya existe (instalado a mano), brew lo adopta en vez de fallar.
 cask "google-chrome", args: { adopt: true }
-# Set of tools to manage resources and applications hosted on Google Cloud
-cask "gcloud-cli"
 # Display key code, unicode value and modifier keys state for any key combination
 cask "key-codes"
 # Clipboard manager

@@ -72,7 +72,7 @@ comentada dentro del archivo — 4 intentos).
 
 | Archivo | Qué hace |
 |---|---|
-| `.zshrc` | oh-my-zsh + powerlevel10k (instant prompt), autosuggestions + syntax-highlighting (de brew), historial compartido, `ls`=eza, `cd`=zoxide (al FINAL del archivo, lo exige), aliases propios (`vim`→nvim, `theme`, `cheatsheet`, `eslint-init`), nvm, pnpm, JAVA_HOME → openjdk@21, gcloud con python3.10. |
+| `.zshrc` | oh-my-zsh + powerlevel10k (instant prompt), autosuggestions + syntax-highlighting (de brew), historial compartido, `ls`=eza, `cd`=zoxide (al FINAL del archivo, lo exige), aliases propios (`vim`→nvim, `theme`, `cheatsheet`, `eslint-init`), nvm, pnpm, JAVA_HOME → openjdk@21. |
 | `.p10k.zsh` | El prompt (generado por `p10k configure`; no se edita a mano). |
 | `.zshenv` / `.zprofile` / `.profile` | Mini-archivos de entorno: cargo (Rust) y brew shellenv. |
 
