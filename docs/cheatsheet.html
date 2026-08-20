@@ -145,7 +145,7 @@
   <div><span class="k" style="color:var(--diag)">x</span> · Trouble (errores)</div>
   <div><span class="k" style="color:var(--fmt)">m</span> · forMat (prettier/stylua)</div>
   <div><span class="k" style="color:var(--sess)">w</span> · Workspace (sesión)</div>
-  <div><span class="k" style="color:var(--lsp)">g</span> · Goto &nbsp;·&nbsp; <span class="k" style="color:var(--lsp)">r/c</span> · rename/code</div>
+  <div><span class="k" style="color:var(--lsp)">g</span> · Goto/LSP &nbsp;·&nbsp; <span class="k" style="color:var(--lsp)">ga/gR</span> · action/rename</div>
 </div>
 
 <div class="card gen">
@@ -256,10 +256,10 @@
 </div>
 
 <div class="card lsp">
-  <h2>LSP: acciones y diagnósticos <span class="why">c=code · r=rename · d=diagnostic</span></h2>
+  <h2>LSP: acciones y diagnósticos <span class="why">ga=action · gR=rename · d=diagnostic</span></h2>
   <table>
-    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>ca</kbd></td><td class="desc"><b>Code actions</b>: arreglos que ofrece el editor<span class="d">Auto-importar, corregir error, refactor rápido, etc.</span></td></tr>
-    <tr><td class="key"><kbd class="sp">␣</kbd><kbd>rn</kbd></td><td class="desc"><b>Renombrar símbolo</b> en todo el proyecto (smart rename)<span class="d">Cambia la variable/función en todos sus usos a la vez</span></td></tr>
+    <tr><td class="key"><kbd>ga</kbd></td><td class="desc"><b>Code actions</b>: arreglos que ofrece el editor<span class="d">Auto-importar, corregir error, refactor rápido, etc.</span></td></tr>
+    <tr><td class="key"><kbd>gR</kbd></td><td class="desc"><b>Renombrar símbolo</b> en todo el proyecto (smart rename)<span class="d">Cambia la variable/función en todos sus usos a la vez</span></td></tr>
     <tr><td class="key"><kbd class="sp">␣</kbd><kbd>rs</kbd></td><td class="desc"><b>Reiniciar el LSP</b> (si se cuelga o deja de sugerir)</td></tr>
     <tr><td class="key"><kbd class="sp">␣</kbd><kbd>d</kbd></td><td class="desc"><b>Ver el error/warning</b> de la línea (popup)</td></tr>
     <tr><td class="key"><kbd class="sp">␣</kbd><kbd>D</kbd></td><td class="desc"><b>Lista de todos los diagnósticos</b> del archivo</td></tr>

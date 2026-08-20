@@ -14,7 +14,9 @@ keymap.set("n", "<leader>nh", ":nohl<CR>", { desc = "Clear search highlights" })
 -- (si tecleas despacio sale un menú). Los borramos aquí al arrancar Y en cada buffer
 -- nuevo (algunos ftplugins los redefinen). Así `gr` es SIEMPRE ir-a-referencias.
 local function purge_gr_defaults()
-  for _, k in ipairs({ "grr", "grn", "gra", "gri", "grt" }) do
+  -- grx = codelens, default nuevo de nvim 0.12 (si sale otro gr* en futuras
+  -- versiones, agrégalo aquí: cualquier mapeo más largo vuelve ambiguo a gr)
+  for _, k in ipairs({ "grr", "grn", "gra", "gri", "grt", "grx" }) do
     pcall(vim.keymap.del, "n", k)
     pcall(vim.keymap.del, "n", k, { buffer = 0 })
   end
@@ -25,55 +27,21 @@ vim.api.nvim_create_autocmd({ "BufEnter", "LspAttach" }, {
   callback = purge_gr_defaults,
 })
 
--- `gr` = referencias LSP, SIEMPRE, por lento que teclees.
+-- `gr` = referencias LSP, como mapeo DIRECTO.
 --
--- ¿Por qué no basta `keymap.set("n", "gr", ...)`? Porque vim tiene un comando
--- BUILTIN `gr{char}` ("replace virtual char") que espera un carácter más. Eso hace
--- `gr` ambiguo y verificado empíricamente ningún ajuste de timeout lo resuelve:
---   · timeout ON  + rápido      -> funciona (pero con un delay de timeoutlen)
---   · timeout ON  + lento       -> vence el timeout del `g`, gana el builtin `gr`
---                                  y te REEMPLAZA una letra del archivo (el bug)
---   · timeout ON  + len enorme  -> tras la `r` espera ESE tiempo -> parece colgado
---   · timeout OFF               -> nunca dispara solo con `g`+`r`
---
--- Solución: mapeamos `g` y leemos el siguiente carácter nosotros con getcharstr(),
--- que espera INDEFINIDAMENTE y no pasa por el sistema de timeouts. Si es `r` vamos
--- a referencias; cualquier otra cosa (`gg`, `gd`, `gc`, `gb`, `gU`, …) se reenvía
--- tal cual para que se comporte como siempre. Efecto extra: al ser `g` un mapeo
--- completo, which-key ya no abre el menú de opciones al pulsar `g`.
-keymap.set("n", "g", function()
-  local count = vim.v.count > 0 and tostring(vim.v.count) or ""
-  local ok, ch = pcall(vim.fn.getcharstr) -- espera sin límite de tiempo
-  if not ok or ch == nil or ch == "" or ch == "\27" then
-    return -- Esc / interrupción -> cancelar
+-- Historia (ago 2026): antes había aquí un mega-mapeo de `g` entera con
+-- getcharstr() porque `gr` era ambiguo — pero la ambigüedad la causaban los
+-- defaults grr/grn/gra/gri/grt de nvim 0.11 (gr era PREFIJO de mapeos más
+-- largos). Como purge_gr_defaults() ya los borra (arriba), `gr` queda como
+-- mapeo completo y único: nuestro mapeo TAPA al builtin gr{char} (replace
+-- virtual char) sin importar lo lento que teclees, y `g` vuelve a ser un
+-- prefijo normal → which-key MUESTRA el menú de opciones al pulsar g.
+-- (El mega-mapeo mataba ese menú: está en el historial de git si hay dudas.)
+keymap.set("n", "gr", function()
+  if not pcall(vim.cmd, "Telescope lsp_references") then
+    vim.lsp.buf.references()
   end
-  if ch == "r" then
-    if not pcall(vim.cmd, "Telescope lsp_references") then
-      vim.lsp.buf.references()
-    end
-    return
-  end
-  -- Reenviar `g` + la tecla. OJO con la recursión: si reenviamos con remap y la
-  -- tecla es otra `g`, este mismo mapeo se dispararía otra vez (rompía `gg`).
-  -- Regla: si existe algún mapeo que EMPIECE por `g<tecla>` (gd, gb, gc, gcc…)
-  -- reenviamos con remap ("m") para que funcione; si no, es un comando builtin
-  -- (gg, gU, gq, g_, ge…) y lo reenviamos SIN remap ("n") para no re-entrar aquí.
-  -- (No usamos mapcheck(): también da match con este mapeo `g`, y siempre elegía
-  --  remap -> recursión.)
-  local prefix = "g" .. ch
-  local function has_map(list)
-    for _, m in ipairs(list) do
-      if m.lhs and #m.lhs >= #prefix and m.lhs:sub(1, #prefix) == prefix then
-        return true
-      end
-    end
-    return false
-  end
-  local mode = (has_map(vim.api.nvim_buf_get_keymap(0, "n")) or has_map(vim.api.nvim_get_keymap("n")))
-      and "m"
-    or "n"
-  vim.api.nvim_feedkeys(count .. "g" .. ch, mode, false)
-end, { desc = "g (gr = referencias LSP, sin timeout)" })
+end, { desc = "Referencias LSP" })
 
 -- salir a modo normal con kj (insert)
 keymap.set("i", "kj", "<Esc>", { desc = "Salir a modo normal (kj)" })
