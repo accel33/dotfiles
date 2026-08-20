@@ -8,8 +8,6 @@ brew "eza"
 brew "fd"
 # GitHub command-line tool
 brew "gh"
-# Open-source build automation tool based on the Groovy and Kotlin DSL
-brew "gradle"
 # Interactive process viewer
 brew "htop"
 # Lightweight and flexible command-line JSON processor
@@ -32,20 +30,12 @@ brew "powerlevel10k"
 brew "python@3.10"
 # Search tool like grep and The Silver Searcher
 brew "ripgrep"
-# Kubernetes: build/deploy iterativo local
-brew "skaffold"
-# Official tldr client written in Rust
-brew "tlrc"
 # Terminal multiplexer
 brew "tmux"
 # CLI tool that moves files or folder to the trash
 brew "trash"
 # Display directories as trees (with optional color/HTML output)
 brew "tree"
-# Command-line unarchiving tools supporting multiple formats
-brew "unar"
-# JavaScript package manager
-brew "yarn"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
 # Fish-like fast/unobtrusive autosuggestions for zsh
