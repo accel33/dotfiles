@@ -42,6 +42,7 @@ node/nvm van antes del bundle):
 ```bash
 # 1) Homebrew (si la máquina no lo tiene)
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+eval "$(/opt/homebrew/bin/brew shellenv)"   # meter brew al PATH de ESTA shell (en una máquina virgen no queda solo)
 
 # 2) nvm + node LTS (el bundle instala paquetes npm; necesita node ya presente)
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash

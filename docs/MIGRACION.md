@@ -38,11 +38,14 @@
 
 ## 2️⃣ En la laptop NUEVA (instalación)
 
+- [ ] **PRIMERO restaurar `~/.ssh/`** (lo personal del paso 1): el clone del
+      repo va por `git@github.com:` y sin la llave no autentica.
+      `chmod 700 ~/.ssh && chmod 600 ~/.ssh/id_ed25519` después de copiar.
 - [ ] Seguir la secuencia del [README](../README.md#-instalación-en-una-máquina-nueva)
       tal cual y EN ORDEN. Con eso quedan: todo el software del Brewfile
       (apps incluidas), symlinks, tema, tpm, skin de k9s.
-- [ ] Restaurar lo del paso 1: `~/.ssh/` (solo lo personal), `~/.claude/` +
-      `~/.claude.json`, `~/.zhistory`, `~/.tmux/resurrect/`.
+- [ ] Restaurar el resto del paso 1: `~/.claude/` + `~/.claude.json`,
+      `~/.zhistory`, `~/.tmux/resurrect/`.
 - [ ] `gh auth login` (git usa gh para credenciales — sin esto no hay push).
 
 ## 3️⃣ Datos por app (en la nueva, al primer arranque)
@@ -62,6 +65,29 @@
 | **Steam** | Login; juegos se re-descargan; saves por Steam Cloud. |
 | **Zoom / WhatsApp / ChatGPT** | Login (WhatsApp: QR desde el teléfono). |
 | **Slack / Discord / iTerm / Lens / Aptakube / Mingo / Surfshark** | Fuera del Brewfile a propósito (decisión ago 2026): instalar a mano solo si se extrañan. |
+
+## 6️⃣ Limpieza de la laptop VIEJA (de Kambista — el día de la entrega)
+
+> SOLO cuando la nueva esté verificada (Firefox con tu perfil + un `git push`
+> de prueba funcionando). Orden exacto:
+
+- [ ] En la NUEVA: `gh auth login` (si no se hizo ya).
+- [ ] En la vieja — deslogueos: Firefox Sync → cerrar sesión ·
+      `gh auth logout` (mata el token y limpia el Llavero) ·
+      **Apple ID**: Ajustes del Sistema → tu nombre → Cerrar sesión
+      (crítico: con tu iCloud activo la Mac queda con Activation Lock y IT
+      no puede reinstalarla).
+- [ ] La llave SSH se borra SOLO de la laptop (archivos): en GitHub NO se
+      toca nada — es la misma llave que usa la Mac nueva.
+- [ ] Borrado (cerrar Firefox/Chrome/Slack/Discord antes):
+      `rm -rf ~/.ssh ~/.aws ~/.kube ~/.config/gcloud ~/.config/gh ~/.docker/config.json ~/.zhistory ~/.zsh_history ~/Documents/abcp ~/Downloads/migracion-accel`
+      y
+      `rm -rf ~/Library/Application\ Support/Google/Chrome ~/Library/Application\ Support/Firefox ~/Library/Application\ Support/discord ~/Library/Application\ Support/Slack`
+- [ ] Al final de todo (Claude ya respaldado en migracion-accel):
+      `rm -rf ~/.claude ~/.claude.json`
+- [ ] Vaciar la Papelera · borrar `migracion-accel` de iCloud (y de la nueva
+      cuando todo esté restaurado).
+- [ ] Entregar pidiendo que **IT la formatee contigo presente**.
 
 ## ✅ Verificación final en la nueva
 
