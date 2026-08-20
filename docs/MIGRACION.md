@@ -73,12 +73,17 @@
 
 - [ ] En la NUEVA: `gh auth login` (si no se hizo ya).
 - [ ] En la vieja — deslogueos: Firefox Sync → cerrar sesión ·
-      `gh auth logout` (mata el token y limpia el Llavero) ·
+      **WhatsApp: desvincular DESDE EL TELÉFONO** (Dispositivos vinculados →
+      esta Mac) · `gh auth logout` (mata el token y limpia el Llavero) ·
       **Apple ID**: Ajustes del Sistema → tu nombre → Cerrar sesión
       (crítico: con tu iCloud activo la Mac queda con Activation Lock y IT
-      no puede reinstalarla).
+      no puede reinstalarla; si pregunta "conservar una copia", NO).
 - [ ] La llave SSH se borra SOLO de la laptop (archivos): en GitHub NO se
       toca nada — es la misma llave que usa la Mac nueva.
+- [ ] **Historial del clipboard (Maccy)**: cerrar Maccy (icono de barra →
+      Quit) y luego
+      `rm -rf ~/Library/Containers/org.p0deje.Maccy && defaults delete org.p0deje.Maccy`
+      (en el container vive el historial — verificado; el defaults son los ajustes).
 - [ ] Borrado (cerrar Firefox/Chrome/Slack/Discord antes):
       `rm -rf ~/.ssh ~/.aws ~/.kube ~/.config/gcloud ~/.config/gh ~/.docker/config.json ~/.zhistory ~/.zsh_history ~/Documents/abcp ~/Downloads/migracion-accel`
       y
