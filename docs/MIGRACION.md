@@ -1,5 +1,21 @@
 # Migración de laptop — checklist
 
+> ## 📌 ESTADO (20-ago-2026): COMPLETADA ✅
+> Se ejecutó desde la laptop VIEJA (Kambista) el 19–20 de agosto.
+> - **Nueva**: verificada — software completo, dotfiles, `git push` de prueba
+>   OK, `cheatsheet` OK, Firefox/Raycast/Obsidian restaurados.
+> - **Vieja**: limpieza §6 casi completa — `rm` de credenciales/historiales/
+>   perfiles ejecutados y VERIFICADOS (gh deslogueado, Llavero limpio,
+>   clipboard de Maccy borrado, Apple ID cerrado). Falta: `rm -rf ~/.claude
+>   ~/.claude.json` al final, Papelera, y entrega con formateo de IT.
+> - **Sesiones de Claude en la nueva**: el primer restore usó el zip del
+>   19-ago 20:44 (NO incluye la saga de la migración). Hay un
+>   `claude-fresh.zip` + `claude-fresh.json` (Desktop de la vieja) para
+>   pasar por AirDrop: en la nueva → ⌘Q a Claude → `rm -rf ~/.claude &&
+>   mkdir -p ~/.claude && ditto -x -k claude-fresh.zip ~/.claude && cp
+>   claude-fresh.json ~/.claude.json` → reabrir.
+> - Pendiente menor: borrar `migracion-accel` de iCloud y de la Mac nueva.
+
 > Plan para pasar a una máquina nueva SIN los repos de Kambista.
 > La instalación base la cubre el [README](../README.md#-instalación-en-una-máquina-nueva)
 > (Homebrew → nvm → oh-my-zsh → clone → `brew bundle` → `install.sh`).
